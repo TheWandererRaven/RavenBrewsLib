@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "ravenbrewslib:item/test_item"
+  }
+}
