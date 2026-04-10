@@ -6,7 +6,7 @@ import com.thewandererraven.ravenbrewslib.registry.RegistryObject;
 import com.thewandererraven.ravenbrewslib.registry.RegistryProvider;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 
-public class BrewEffectRegistry {
+public class BrewEffectsRegistry {
     public static final RegistryProvider<BrewEffect> BREW_EFFECT_CORES = RegistryProvider.get(RavenBrewsLibRegistryKeys.BREW_EFFECT_CORES, Constants.MOD_ID, BrewEffect.class);
 
     public static final String _heal_id = "effect.heal";

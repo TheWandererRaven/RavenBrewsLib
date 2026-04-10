@@ -7,31 +7,31 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
-public record BrewEffect(
+public record BrewEffectData(
         ResourceLocation id,
         int duration,
         double mainValue,
         double secondaryValue
 ) {
 
-    public static final Codec<BrewEffect> CODEC = RecordCodecBuilder.create(instance ->
+    public static final Codec<BrewEffectData> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    ResourceLocation.CODEC.fieldOf("id").forGetter(BrewEffect::id),
-                    Codec.INT.optionalFieldOf("duration", 0).forGetter(BrewEffect::duration),
-                    Codec.DOUBLE.fieldOf("main_value").forGetter(BrewEffect::mainValue),
-                    Codec.DOUBLE.optionalFieldOf("secondary_value", 0.0).forGetter(BrewEffect::secondaryValue)
-            ).apply(instance, BrewEffect::new)
+                    ResourceLocation.CODEC.fieldOf("id").forGetter(BrewEffectData::id),
+                    Codec.INT.optionalFieldOf("duration", 0).forGetter(BrewEffectData::duration),
+                    Codec.DOUBLE.fieldOf("main_value").forGetter(BrewEffectData::mainValue),
+                    Codec.DOUBLE.optionalFieldOf("secondary_value", 0.0).forGetter(BrewEffectData::secondaryValue)
+            ).apply(instance, BrewEffectData::new)
     );
 
-    public static List<BrewEffect.Builder> getListOfBasicEffects() {
+    public static List<BrewEffectData.Builder> getListOfDefaultEffects() {
         return List.of(
-                new BrewEffect.Builder(
+                new BrewEffectData.Builder(
                         ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "effect.haste"),
                         15 * 20,
                         5.0,
                         0.0
                 ),
-                new BrewEffect.Builder(
+                new BrewEffectData.Builder(
                         ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "effect.slowness"),
                         7 * 20,
                         -0.2,
@@ -97,8 +97,8 @@ public record BrewEffect(
             return this;
         }
 
-        public BrewEffect build() {
-            return new BrewEffect(this.id, this.duration, this.mainValue, this.secondaryValue);
+        public BrewEffectData build() {
+            return new BrewEffectData(this.id, this.duration, this.mainValue, this.secondaryValue);
         }
     }
 }
