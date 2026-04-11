@@ -25,5 +25,7 @@ public interface RegistryProvider<T> {
 
     Collection<RegistryObject<T>> getEntries();
 
+    public void makeRegistry();
+
     String getModId();
 }

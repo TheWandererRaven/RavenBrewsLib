@@ -8,6 +8,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Supplier;
+
+import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -23,6 +25,12 @@ public class FabricRegistryProvider implements IRegistryFactory {
     @Override
     public <T> RegistryProvider<T> create(Registry<T> registry, String modId) {
         return new Provider<>(modId, registry);
+    }
+
+
+    @Override
+    public <T> RegistryProvider<T> create(ResourceKey<? extends Registry<T>> resourceKey, String modId, Class<T> type) {
+        return create(FabricRegistryBuilder.createSimple(type, resourceKey.location()).buildAndRegister(), modId);
     }
 
     private static class Provider<T> implements RegistryProvider<T> {
@@ -80,6 +88,11 @@ public class FabricRegistryProvider implements IRegistryFactory {
         @Override
         public Collection<RegistryObject<T>> getEntries() {
             return entriesView;
+        }
+
+        @Override
+        public void makeRegistry() {
+
         }
 
         @Override
