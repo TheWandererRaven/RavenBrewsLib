@@ -1,7 +1,7 @@
 package com.thewandererraven.ravenbrewslib.utils;
 
 
-import com.thewandererraven.ravenbrewslib.brew.effect.BrewEffect;
+import com.thewandererraven.ravenbrewslib.brew.effect.BrewEffectBehaviour;
 import com.thewandererraven.ravenbrewslib.brew.effect.BrewEffectsRegistry;
 import com.thewandererraven.ravenbrewslib.registry.RegistryObject;
 import net.minecraft.core.Holder;
@@ -12,8 +12,8 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.level.Level;
 
 public class BrewEffectsUtils {
-    public static BrewEffect findEffectInRegistry(ResourceLocation effectId) {
-        RegistryObject<BrewEffect> foundEffect = BrewEffectsRegistry.BREW_EFFECT_CORES.getEntries().stream()
+    public static BrewEffectBehaviour findEffectInRegistry(ResourceLocation effectId) {
+        RegistryObject<BrewEffectBehaviour> foundEffect = BrewEffectsRegistry.BREW_EFFECT_CORES.getEntries().stream()
                 .filter(param -> param.getId().equals(effectId)).findFirst()
                 .orElse(null);
         if(foundEffect != null)

@@ -7,31 +7,31 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.List;
 
-public record BrewEffectData(
+public record BrewEffectDefinition(
         ResourceLocation id,
         int duration,
         double mainValue,
         double secondaryValue
 ) {
 
-    public static final Codec<BrewEffectData> CODEC = RecordCodecBuilder.create(instance ->
+    public static final Codec<BrewEffectDefinition> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
-                    ResourceLocation.CODEC.fieldOf("id").forGetter(BrewEffectData::id),
-                    Codec.INT.optionalFieldOf("duration", 0).forGetter(BrewEffectData::duration),
-                    Codec.DOUBLE.fieldOf("main_value").forGetter(BrewEffectData::mainValue),
-                    Codec.DOUBLE.optionalFieldOf("secondary_value", 0.0).forGetter(BrewEffectData::secondaryValue)
-            ).apply(instance, BrewEffectData::new)
+                    ResourceLocation.CODEC.fieldOf("id").forGetter(BrewEffectDefinition::id),
+                    Codec.INT.optionalFieldOf("duration", 0).forGetter(BrewEffectDefinition::duration),
+                    Codec.DOUBLE.fieldOf("main_value").forGetter(BrewEffectDefinition::mainValue),
+                    Codec.DOUBLE.optionalFieldOf("secondary_value", 0.0).forGetter(BrewEffectDefinition::secondaryValue)
+            ).apply(instance, BrewEffectDefinition::new)
     );
 
-    public static List<BrewEffectData.Builder> getListOfDefaultEffects() {
+    public static List<BrewEffectDefinition.Builder> getListOfDefaultEffects() {
         return List.of(
-                new BrewEffectData.Builder(
+                new BrewEffectDefinition.Builder(
                         ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "effect.haste"),
                         15 * 20,
                         5.0,
                         0.0
                 ),
-                new BrewEffectData.Builder(
+                new BrewEffectDefinition.Builder(
                         ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "effect.slowness"),
                         7 * 20,
                         -0.2,
@@ -97,8 +97,8 @@ public record BrewEffectData(
             return this;
         }
 
-        public BrewEffectData build() {
-            return new BrewEffectData(this.id, this.duration, this.mainValue, this.secondaryValue);
+        public BrewEffectDefinition build() {
+            return new BrewEffectDefinition(this.id, this.duration, this.mainValue, this.secondaryValue);
         }
     }
 }

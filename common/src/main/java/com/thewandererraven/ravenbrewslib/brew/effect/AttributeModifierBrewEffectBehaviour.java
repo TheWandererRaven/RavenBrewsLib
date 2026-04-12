@@ -10,17 +10,16 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.function.Consumer;
-import java.util.logging.Level;
 
-public class AttributeModifierEffect extends BrewEffect {
+public class AttributeModifierBrewEffectBehaviour extends BrewEffectBehaviour {
     final ResourceLocation attributeId;
     final AttributeModifier.Operation attributeOperation;
 
-    public AttributeModifierEffect(ResourceLocation attributeId, AttributeModifier.Operation attributeOperation, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
+    public AttributeModifierBrewEffectBehaviour(ResourceLocation attributeId, AttributeModifier.Operation attributeOperation, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
         super(
                 brewEffectContext -> {
-                    AttributeModifierEffect.addAttributeModifierToPlayer(brewEffectContext.entity(), BrewEffectsUtils.findAttributeByItsId(brewEffectContext.entity().level(), attributeId),
-                            new AttributeModifierEffect.AttributeTemplate(
+                    AttributeModifierBrewEffectBehaviour.addAttributeModifierToPlayer(brewEffectContext.entity(), BrewEffectsUtils.findAttributeByItsId(brewEffectContext.entity().level(), attributeId),
+                            new AttributeModifierBrewEffectBehaviour.AttributeTemplate(
                                     attributeId,
                                     brewEffectContext.effectMainValue(),
                                     attributeOperation
@@ -28,8 +27,8 @@ public class AttributeModifierEffect extends BrewEffect {
                     primaryEffect.accept(brewEffectContext);
                     },
                 brewEffectContext -> {
-                    AttributeModifierEffect.removeAttributeModifierToPlayer(brewEffectContext.entity(), BrewEffectsUtils.findAttributeByItsId(brewEffectContext.entity().level(), attributeId),
-                            new AttributeModifierEffect.AttributeTemplate(
+                    AttributeModifierBrewEffectBehaviour.removeAttributeModifierToPlayer(brewEffectContext.entity(), BrewEffectsUtils.findAttributeByItsId(brewEffectContext.entity().level(), attributeId),
+                            new AttributeModifierBrewEffectBehaviour.AttributeTemplate(
                                     attributeId,
                                     brewEffectContext.effectSecondaryValue() * -1,
                                     attributeOperation

@@ -3,13 +3,13 @@ package com.thewandererraven.ravenbrewslib.brew.effect;
 import net.minecraft.world.entity.LivingEntity;
 
 public class BrewEffectInstance {
-    public BrewEffect effectCore;
+    public BrewEffectBehaviour effectCore;
     public int effectTicks;
     public int effectTicksDuration;
     public double mainValue;
     public double secondaryValue;
 
-    public BrewEffectInstance(BrewEffect effectCore, int effectTicksDuration, double mainValue, double secondaryValue) {
+    public BrewEffectInstance(BrewEffectBehaviour effectCore, int effectTicksDuration, double mainValue, double secondaryValue) {
         this.effectCore = effectCore;
         this.effectTicks = 0;
         this.effectTicksDuration = effectTicksDuration;
@@ -36,5 +36,4 @@ public class BrewEffectInstance {
         }
         return false;
     }
-
 }
