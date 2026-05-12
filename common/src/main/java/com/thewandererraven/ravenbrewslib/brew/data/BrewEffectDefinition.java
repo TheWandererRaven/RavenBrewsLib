@@ -23,6 +23,11 @@ public record BrewEffectDefinition(
             ).apply(instance, BrewEffectDefinition::new)
     );
 
+    public ResourceLocation generateIconLocation() {
+        // TODO: Rework this later to have more constant paths
+        return ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/effect/icons/" + this.id.getPath() + ".png");
+    }
+
     public static List<BrewEffectDefinition.Builder> getListOfDefaultEffects() {
         return List.of(
                 new BrewEffectDefinition.Builder(

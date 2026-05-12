@@ -15,11 +15,6 @@ public class BrewEffectBehaviour {
         this.additionalEffect = additionalEffect;
     }
 
-//    public ResourceLocation generateIconLocation() {
-//        // TODO: Rework this later to have more constant paths
-//        return ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/effect/icons/" + this.attributeId.getPath() + ".png");
-//    }
-
     public static BrewEffectBehaviour instant(Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
         return new BrewEffectBehaviour(primaryEffect, additionalEffect);
     }

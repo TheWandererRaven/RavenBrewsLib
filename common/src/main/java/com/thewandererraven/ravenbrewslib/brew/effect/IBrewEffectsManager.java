@@ -9,11 +9,9 @@ import java.util.List;
 
 public interface IBrewEffectsManager {
     public boolean isEmpty();
-    boolean add(BrewEffectDefinition brewData);
+    void add(List<BrewEffectDefinition> brewData);
     void tick();
-    List<BrewEffectBehaviour> getEffectsStack();
-    public void setEffectIcons(List<ResourceLocation> iconLocations);
-    public List<ResourceLocation> getEffectIcons();
+    List<BrewEffectDefinition> getEffectsStack();
     public void clearEffects();
     public void clearAll();
     public void sendEffectIconsToClient();
