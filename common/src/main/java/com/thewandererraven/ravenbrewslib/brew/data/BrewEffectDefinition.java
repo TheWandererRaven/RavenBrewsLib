@@ -25,7 +25,7 @@ public record BrewEffectDefinition(
 
     public ResourceLocation generateIconLocation() {
         // TODO: Rework this later to have more constant paths
-        return ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "textures/gui/effect/icons/" + this.id.getPath() + ".png");
+        return ResourceLocation.fromNamespaceAndPath(this.id().getNamespace(), "textures/gui/effect/icons/" + this.id.getPath() + ".png");
     }
 
     public static List<BrewEffectDefinition.Builder> getListOfDefaultEffects() {
