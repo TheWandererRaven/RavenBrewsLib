@@ -4,6 +4,7 @@ import com.thewandererraven.ravenbrewslib.brew.data.BrewIngredient;
 import net.minecraft.world.item.Item;
 
 import java.util.Map;
+import java.util.Optional;
 
 public class BrewIngredientRegistry {
     private static Map<Item, BrewIngredient> INGREDIENTS = Map.of();
@@ -14,8 +15,8 @@ public class BrewIngredientRegistry {
         INGREDIENTS = Map.copyOf(map);
     }
 
-    public static BrewIngredient get(Item item) {
-        return INGREDIENTS.get(item);
+    public static Optional<BrewIngredient> get(Item item) {
+        return Optional.ofNullable(INGREDIENTS.get(item));
     }
 
     public static Map<Item, BrewIngredient> getAll() {
