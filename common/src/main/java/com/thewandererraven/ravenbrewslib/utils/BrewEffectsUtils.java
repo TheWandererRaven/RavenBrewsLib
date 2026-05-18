@@ -8,9 +8,12 @@ import com.thewandererraven.ravenbrewslib.brew.effect.BrewEffectsRegistry;
 import com.thewandererraven.ravenbrewslib.brewing.base.BrewBaseRegistry;
 import com.thewandererraven.ravenbrewslib.brewing.ingredient.BrewIngredientRegistry;
 import com.thewandererraven.ravenbrewslib.brewing.variant.BrewVariantRegistry;
+import com.thewandererraven.ravenbrewslib.registry.RavenBrewsLibRegistryKeys;
 import com.thewandererraven.ravenbrewslib.registry.RegistryObject;
+import com.thewandererraven.ravenbrewslib.registry.RegistryProvider;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -21,13 +24,12 @@ import java.util.List;
 import java.util.Optional;
 
 public class BrewEffectsUtils {
-    public static BrewEffectBehaviour findEffectInRegistry(ResourceLocation effectId) {
-        RegistryObject<BrewEffectBehaviour> foundEffect = BrewEffectsRegistry.BREW_EFFECT_BEHAVIOUR.getEntries().stream()
-                .filter(param -> param.getId().equals(effectId)).findFirst()
-                .orElse(null);
-        if(foundEffect != null)
-            return foundEffect.get();
-        return null;
+
+    public static BrewEffectBehaviour findEffectBehaviour(Level level, ResourceLocation effectId) {
+        RegistryAccess regAccess = level.registryAccess();
+        Registry<BrewEffectBehaviour> registry = regAccess.lookupOrThrow(RavenBrewsLibRegistryKeys.BREW_EFFECT_BEHAVIOUR);
+        Optional<Holder.Reference<BrewEffectBehaviour>> foundEff = registry.get(effectId);
+        return foundEff.map(Holder.Reference::value).orElse(null);
     }
 
     public static Holder<Attribute> findAttributeByItsId(Level level, ResourceLocation attributeId) {
