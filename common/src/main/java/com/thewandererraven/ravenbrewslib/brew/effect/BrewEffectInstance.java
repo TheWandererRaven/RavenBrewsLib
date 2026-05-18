@@ -5,6 +5,7 @@ import com.thewandererraven.ravenbrewslib.brew.data.BrewEffectDefinition;
 import com.thewandererraven.ravenbrewslib.utils.BrewEffectsUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 
 public class BrewEffectInstance {
     public BrewEffectBehaviour effectBehaviour;
@@ -21,10 +22,10 @@ public class BrewEffectInstance {
         this.secondaryValue = secondaryValue;
     }
 
-    public BrewEffectInstance(BrewEffectDefinition effectDef)
+    public BrewEffectInstance(Level level, BrewEffectDefinition effectDef)
     {
         this(BrewEffectBehaviour.EMPTY, effectDef.duration(), effectDef.mainValue(), effectDef.secondaryValue());
-        BrewEffectBehaviour behaviour = BrewEffectsUtils.findEffectInRegistry(effectDef.id());
+        BrewEffectBehaviour behaviour = BrewEffectsUtils.findEffectBehaviour(level, effectDef.id());
         if(behaviour != null) {
             this.effectBehaviour = behaviour;
         } else

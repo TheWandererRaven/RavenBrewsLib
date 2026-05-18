@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public class BrewEffectsUtils {
     public static BrewEffectBehaviour findEffectInRegistry(ResourceLocation effectId) {
-        RegistryObject<BrewEffectBehaviour> foundEffect = BrewEffectsRegistry.BREW_EFFECT_CORES.getEntries().stream()
+        RegistryObject<BrewEffectBehaviour> foundEffect = BrewEffectsRegistry.BREW_EFFECT_BEHAVIOUR.getEntries().stream()
                 .filter(param -> param.getId().equals(effectId)).findFirst()
                 .orElse(null);
         if(foundEffect != null)
