@@ -17,9 +17,15 @@ public interface RegistryProvider<T> {
         return Services.REGISTRY_FACTORY.create(registry, modId);
     }
 
+    static <T> RegistryProvider<T> get(ResourceKey<Registry<T>> resourceKey, String modId, Class<T> type) {
+        return Services.REGISTRY_FACTORY.create(resourceKey, modId, type);
+        }
+
     <I extends T> RegistryObject<I> register(String name, Supplier<? extends I> supplier);
 
     Collection<RegistryObject<T>> getEntries();
+
+    public void makeRegistry();
 
     String getModId();
 }

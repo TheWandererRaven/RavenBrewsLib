@@ -1,5 +1,6 @@
 package com.thewandererraven.ravenbrewslib;
 
+import com.thewandererraven.ravenbrewslib.brew.effect.BrewEffectsRegistry;
 import com.thewandererraven.ravenbrewslib.item.BasicItemsRegistry;
 import com.thewandererraven.ravenbrewslib.platform.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -25,9 +26,9 @@ public class RavenBrewsLibCommon {
         // we have an interface in the common code and use a loader specific implementation to delegate our call to
         // the platform specific approach.
         if (Services.PLATFORM.isModLoaded("ravenbrewslib")) {
-
             Constants.LOG.info("Hello to rabenbrewslib");
         }
         BasicItemsRegistry.init();
+        BrewEffectsRegistry.init();
     }
 }

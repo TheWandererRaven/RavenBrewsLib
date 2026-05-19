@@ -37,6 +37,13 @@ public class NeoForgeRegistryProvider implements IRegistryFactory {
         }
     }
 
+    @Override
+    public <T> RegistryProvider<T> create(ResourceKey<? extends Registry<T>> resourceKey, String modId, Class<T> type) {
+        RegistryProvider<T> provider = create(resourceKey, modId);
+        provider.makeRegistry();
+        return provider;
+    }
+
     private static class Provider<T> implements RegistryProvider<T> {
         private final String modId;
         private final DeferredRegister<T> registry;
@@ -52,6 +59,12 @@ public class NeoForgeRegistryProvider implements IRegistryFactory {
         @Override
         public String getModId() {
             return this.modId;
+        }
+
+        @Override
+        public void makeRegistry() {
+            this.registry.makeRegistry(builder -> {
+            });
         }
 
         @Override

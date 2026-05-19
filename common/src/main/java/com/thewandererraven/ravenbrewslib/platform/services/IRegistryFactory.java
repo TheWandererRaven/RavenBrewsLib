@@ -11,4 +11,6 @@ public interface IRegistryFactory {
     default <T> RegistryProvider<T> create(Registry<T> registry, String modId) {
         return create(registry.key(), modId);
     }
+
+    public <T> RegistryProvider<T> create(ResourceKey<? extends Registry<T>> resourceKey, String modId, Class<T> type);
 }
