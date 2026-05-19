@@ -22,7 +22,7 @@ public class BrewEffectsRegistry {
     public static final String _absorption_id = "effect.absorption";
     public static final RegistryObject<BrewEffectBehaviour> ABSORPTION = BREW_EFFECT_BEHAVIOUR.register(
             _absorption_id,
-            () -> BrewEffectBehaviour.attributeModifier("max_absorption", AttributeModifier.Operation.ADD_VALUE, context -> {
+            () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("max_absorption", AttributeModifier.Operation.ADD_VALUE), context -> {
                 context.entity().setAbsorptionAmount(context.entity().getAbsorptionAmount() + context.effectMainValueAsFloat());
             })
     );

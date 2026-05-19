@@ -9,35 +9,36 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public class AttributeModifierBrewEffectBehaviour extends BrewEffectBehaviour {
-    final ResourceLocation attributeId;
-    final AttributeModifier.Operation attributeOperation;
+    //final List<ResourceLocation> attributeIds;
+    //final AttributeModifier.Operation attributeOperation;
 
-    public AttributeModifierBrewEffectBehaviour(ResourceLocation attributeId, AttributeModifier.Operation attributeOperation, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
+    public AttributeModifierBrewEffectBehaviour(List<AttributeTemplate> attributes, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
         super(
                 brewEffectContext -> {
-                    AttributeModifierBrewEffectBehaviour.addAttributeModifierToPlayer(brewEffectContext.entity(), BrewEffectsUtils.findAttributeByItsId(brewEffectContext.entity().level(), attributeId),
-                            new AttributeModifierBrewEffectBehaviour.AttributeTemplate(
-                                    attributeId,
-                                    brewEffectContext.effectMainValue(),
-                                    attributeOperation
-                            ).create(1));
-                    primaryEffect.accept(brewEffectContext);
-                    },
+                    for (AttributeTemplate attr : attributes) {
+                        AttributeModifierBrewEffectBehaviour.addAttributeModifierToPlayer(
+                                brewEffectContext.entity(),
+                                BrewEffectsUtils.findAttributeByItsId(brewEffectContext.entity().level(), attr.id),
+                                attr.create(brewEffectContext.effectMainValue())
+                        );
+                        primaryEffect.accept(brewEffectContext);
+                    }
+                },
                 brewEffectContext -> {
-                    AttributeModifierBrewEffectBehaviour.removeAttributeModifierToPlayer(brewEffectContext.entity(), BrewEffectsUtils.findAttributeByItsId(brewEffectContext.entity().level(), attributeId),
-                            new AttributeModifierBrewEffectBehaviour.AttributeTemplate(
-                                    attributeId,
-                                    brewEffectContext.effectSecondaryValue() * -1,
-                                    attributeOperation
-                            ).create(1));
-                    additionalEffect.accept(brewEffectContext);
+                    for (AttributeTemplate attr : attributes) {
+                        AttributeModifierBrewEffectBehaviour.removeAttributeModifierToPlayer(
+                                brewEffectContext.entity(),
+                                BrewEffectsUtils.findAttributeByItsId(brewEffectContext.entity().level(), attr.id),
+                                attr.create(brewEffectContext.effectSecondaryValue() * -1)
+                        );
+                        additionalEffect.accept(brewEffectContext);
+                    }
                 }
                 );
-        this.attributeId = attributeId;
-        this.attributeOperation = attributeOperation;
     }
 
     private static void addAttributeModifierToPlayer(LivingEntity entity, Holder<Attribute> attribute, AttributeModifier modifier) {
@@ -57,9 +58,40 @@ public class AttributeModifierBrewEffectBehaviour extends BrewEffectBehaviour {
         }
     }
 
-    public record AttributeTemplate(ResourceLocation id, double amount, AttributeModifier.Operation operation) {
-        public AttributeModifier create(int level) {
-            return new AttributeModifier(this.id, this.amount * (double)(level + 1), this.operation);
+    public record AttributeTemplate(ResourceLocation id, double baseAmount, AttributeModifier.Operation operation) {
+//        public AttributeModifier create(int level) {
+//            return new AttributeModifier(this.id, this.amount * (double)(level + 1), this.operation);
+//        }
+        public AttributeModifier create(double amountMultiplier) {
+            return new AttributeModifier(this.id, baseAmount * amountMultiplier, this.operation);
+        }
+
+        public AttributeTemplate(ResourceLocation id, AttributeModifier.Operation operation) {
+            this(id, 1, operation);
+        }
+
+        public AttributeTemplate(ResourceLocation id, double baseAmount) {
+            this(id, baseAmount, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        }
+
+        public AttributeTemplate(ResourceLocation id) {
+            this(id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+        }
+
+        public AttributeTemplate(String id, double baseAmount, AttributeModifier.Operation operation) {
+            this(ResourceLocation.withDefaultNamespace(id), baseAmount, operation);
+        }
+
+        public AttributeTemplate(String id, AttributeModifier.Operation operation) {
+            this(ResourceLocation.withDefaultNamespace(id), operation);
+        }
+
+        public AttributeTemplate(String id, double baseAmount) {
+            this(ResourceLocation.withDefaultNamespace(id), baseAmount);
+        }
+
+        public AttributeTemplate(String id) {
+            this(ResourceLocation.withDefaultNamespace(id));
         }
     }
 }
