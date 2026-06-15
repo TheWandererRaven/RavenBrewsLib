@@ -64,11 +64,15 @@ public record BrewEffectDefinition(
 
         public Builder addDuration(int addedDuration) {
             this.duration += addedDuration;
+            if(this.duration < 0)
+                this.duration = 0;
             return this;
         }
 
         public Builder scaleDuration(double multiplier) {
             this.duration = (int) Math.ceil(this.duration * multiplier);
+            if(this.duration < 0)
+                this.duration = 0;
             return this;
         }
 

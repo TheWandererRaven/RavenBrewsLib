@@ -10,18 +10,20 @@ public class BrewEffectBehaviour {
     public final Consumer<BrewEffectContext> primaryEffect;
     //TODO: move this so it's ony on the attribute mod class? Currently I have this in case I need it for another effect type, now it's just useful for att mod so I wan remove the modifier when the effect ends
     public final Consumer<BrewEffectContext> additionalEffect;
+    public final TickMode tickMode;
 
-    public BrewEffectBehaviour(Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
+    public BrewEffectBehaviour(Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect, TickMode tickMode) {
         this.primaryEffect = primaryEffect;
         this.additionalEffect = additionalEffect;
+        this.tickMode = tickMode;
     }
 
     public static BrewEffectBehaviour instant(Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
-        return new BrewEffectBehaviour(primaryEffect, additionalEffect);
+        return new BrewEffectBehaviour(primaryEffect, additionalEffect, TickMode.SINGLE);
     }
 
     public static BrewEffectBehaviour instant(Consumer<BrewEffectContext> primaryEffect) {
-        return new BrewEffectBehaviour(primaryEffect, context -> {});
+        return instant(primaryEffect, context -> {});
     }
 
     public static BrewEffectBehaviour attributeModifier(List<AttributeModifierBrewEffectBehaviour.AttributeTemplate> attributes) {
@@ -63,4 +65,11 @@ public class BrewEffectBehaviour {
     public static final BrewEffectBehaviour EMPTY = instant(
             (context) -> {}
     );
+
+    public enum TickMode {
+        SINGLE,
+        EVERY_TICK,
+        START_AND_END,
+        INTERVAL
+    }
 }

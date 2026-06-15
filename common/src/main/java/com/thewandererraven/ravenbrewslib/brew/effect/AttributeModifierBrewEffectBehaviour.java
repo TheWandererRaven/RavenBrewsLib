@@ -37,7 +37,8 @@ public class AttributeModifierBrewEffectBehaviour extends BrewEffectBehaviour {
                         );
                         additionalEffect.accept(brewEffectContext);
                     }
-                }
+                },
+                TickMode.START_AND_END
                 );
     }
 
