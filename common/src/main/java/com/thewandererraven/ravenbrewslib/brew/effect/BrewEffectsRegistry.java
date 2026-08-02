@@ -5,57 +5,161 @@ import com.thewandererraven.ravenbrewslib.registry.RavenBrewsLibRegistryKeys;
 import com.thewandererraven.ravenbrewslib.registry.RegistryObject;
 import com.thewandererraven.ravenbrewslib.registry.RegistryProvider;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.alchemy.Potions;
+
+import java.util.List;
 
 public class BrewEffectsRegistry {
-    public static final RegistryProvider<BrewEffectBehaviour> BREW_EFFECT_BEHAVIOUR = RegistryProvider.get(RavenBrewsLibRegistryKeys.BREW_EFFECT_BEHAVIOUR, Constants.MOD_ID, BrewEffectBehaviour.class);
+    public static final RegistryProvider<BrewEffectBehaviour> BREW_EFFECT_BEHAVIOURS = RegistryProvider.get(RavenBrewsLibRegistryKeys.BREW_EFFECT_BEHAVIOUR, Constants.MOD_ID, BrewEffectBehaviour.class);
 
+    // HEAL ========== Simple, instant heal
     public static final String _heal_id = "effect.heal";
-    public static final RegistryObject<BrewEffectBehaviour> HEAL = BREW_EFFECT_BEHAVIOUR.register(
+    public static final RegistryObject<BrewEffectBehaviour> HEAL = BREW_EFFECT_BEHAVIOURS.register(
             _heal_id,
             () -> BrewEffectBehaviour.instant(context -> context.entity().heal(context.effectMainValueAsInt()))
     );
+
+    // HURT ========== Simple, instant hurt
     public static final String _hurt_id = "effect.hurt";
-    public static final RegistryObject<BrewEffectBehaviour> HURT = BREW_EFFECT_BEHAVIOUR.register(
+    public static final RegistryObject<BrewEffectBehaviour> HURT = BREW_EFFECT_BEHAVIOURS.register(
             _hurt_id,
             () -> BrewEffectBehaviour.instant(context -> context.entity().hurt(context.entity().damageSources().generic(), context.effectMainValueAsFloat()))
     );
+
+    // ABSORPTION ========== Add absorption attribute and add absorption points
     public static final String _absorption_id = "effect.absorption";
-    public static final RegistryObject<BrewEffectBehaviour> ABSORPTION = BREW_EFFECT_BEHAVIOUR.register(
+    public static final RegistryObject<BrewEffectBehaviour> ABSORPTION = BREW_EFFECT_BEHAVIOURS.register(
             _absorption_id,
             () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("max_absorption", AttributeModifier.Operation.ADD_VALUE), context -> {
                 context.entity().setAbsorptionAmount(context.entity().getAbsorptionAmount() + context.effectMainValueAsFloat());
             })
     );
+
+    // HEALTH BOOST ========== Increase health temporarily
+    public static final String _health_boost_id = "effect.health_boost";
+    public static final RegistryObject<BrewEffectBehaviour> HEALTH_BOOST = BREW_EFFECT_BEHAVIOURS.register(
+            _health_boost_id,
+            () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("max_health", AttributeModifier.Operation.ADD_VALUE), context -> {
+                context.entity().heal(context.effectMainValueAsFloat());
+            })
+    );
+
+    // SPEED ========== Increase movement speed attribute
     public static final String _speed_id = "effect.speed";
-    public static final RegistryObject<BrewEffectBehaviour> SPEED = BREW_EFFECT_BEHAVIOUR.register(
+    public static final RegistryObject<BrewEffectBehaviour> SPEED = BREW_EFFECT_BEHAVIOURS.register(
             _speed_id,
             () -> BrewEffectBehaviour.attributeModifier("movement_speed")
     );
-    // YES, it's basically the same, I just want the different id. I might add more functionality later so the difference is actually different
+
+    // SLOWNESS ========== Decrease movement speed attribute
+    // YES, it's basically the same as the speed effect, I just want the different id. I might add more functionality later so the difference is actually different
     public static final String _slowness_id = "effect.slowness";
-    public static final RegistryObject<BrewEffectBehaviour> SLOWNESS = BREW_EFFECT_BEHAVIOUR.register(
+    public static final RegistryObject<BrewEffectBehaviour> SLOWNESS = BREW_EFFECT_BEHAVIOURS.register(
             _slowness_id,
-            () -> BrewEffectBehaviour.attributeModifier("movement_speed")
+            () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("movement_speed", -1))
     );
-    public static final String _attack_speed_id = "effect.attack_speed";
-    public static final RegistryObject<BrewEffectBehaviour> ATTACK_SPEED = BREW_EFFECT_BEHAVIOUR.register(
-            _attack_speed_id,
+
+    // QUICK ATTACK ========== Increase attack speed attribute
+    public static final String _quick_attack_id = "effect.quick_attack";
+    public static final RegistryObject<BrewEffectBehaviour> QUICK_ATTACK = BREW_EFFECT_BEHAVIOURS.register(
+            _quick_attack_id,
             () -> BrewEffectBehaviour.attributeModifier("attack_speed")
     );
-    public static final String _haste_id = "effect.haste";
-    public static final RegistryObject<BrewEffectBehaviour> HASTE = BREW_EFFECT_BEHAVIOUR.register(
-            _haste_id,
+
+    // SLOW ATTACK ========== Decrease attack_speed attribute
+    public static final String _slow_attack_id = "effect.slow_attack";
+    public static final RegistryObject<BrewEffectBehaviour> SLOW_ATTACK = BREW_EFFECT_BEHAVIOURS.register(
+            _slow_attack_id,
+            () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("attack_speed", -1))
+    );
+
+    // MINER'S ELBOW ========== Increase block break speed attribute
+    public static final String _miners_elbow_id = "effect.miners_elbow";
+    public static final RegistryObject<BrewEffectBehaviour> MINERS_ELBOW = BREW_EFFECT_BEHAVIOURS.register(
+            _miners_elbow_id,
             () -> BrewEffectBehaviour.attributeModifier("block_break_speed")
     );
+
+    // OVERWORKED ========== Decrease block break speed attribute
+    public static final String _overworked_id = "effect.overworked";
+    public static final RegistryObject<BrewEffectBehaviour> MINING_FATIGUE = BREW_EFFECT_BEHAVIOURS.register(
+            _overworked_id,
+            () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("block_break_speed", -1))
+    );
+
+    // STRONG LEGS ========== Decrease fall damage multiplier attribute
     public static final String _strong_legs_id = "effect.strong_legs";
-    public static final RegistryObject<BrewEffectBehaviour> STRONG_LEGS = BREW_EFFECT_BEHAVIOUR.register(
+    public static final RegistryObject<BrewEffectBehaviour> STRONG_LEGS = BREW_EFFECT_BEHAVIOURS.register(
             _strong_legs_id,
             () -> BrewEffectBehaviour.attributeModifier("fall_damage_multiplier")
     );
+
+    // WEAK LEGS ========== Increase fall damage multiplier attribute
     public static final String _weak_legs_id = "effect.weak_legs";
-    public static final RegistryObject<BrewEffectBehaviour> WEAK_LEGS = BREW_EFFECT_BEHAVIOUR.register(
+    public static final RegistryObject<BrewEffectBehaviour> WEAK_LEGS = BREW_EFFECT_BEHAVIOURS.register(
             _weak_legs_id,
-            () -> BrewEffectBehaviour.attributeModifier("fall_damage_multiplier")
+            () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("fall_damage_multiplier", -1))
+    );
+
+    // JUMP BOOST ========== Increase jump strength attr while also creasing the safe fall distance
+    public static final String _jump_boost_id = "effect.jump_boost";
+    public static final RegistryObject<BrewEffectBehaviour> JUMP_BOOST = BREW_EFFECT_BEHAVIOURS.register(
+            _jump_boost_id,
+            () -> BrewEffectBehaviour.attributeModifier(List.of(
+                    new AttributeModifierBrewEffectBehaviour.AttributeTemplate("jump_strength"),
+                    //new AttributeModifierBrewEffectBehaviour.AttributeTemplate("fall_damage_multiplier", -1),
+                    new AttributeModifierBrewEffectBehaviour.AttributeTemplate("safe_fall_distance")
+            ))
+    );
+
+    // LEVITATION ========== Decrease gravity attr
+    public static final String _levitation_id = "effect.levitation";
+    public static final RegistryObject<BrewEffectBehaviour> LEVITATION = BREW_EFFECT_BEHAVIOURS.register(
+            _levitation_id,
+            () -> BrewEffectBehaviour.attributeModifier(List.of(
+                    new AttributeModifierBrewEffectBehaviour.AttributeTemplate("gravity", -0.01, AttributeModifier.Operation.ADD_VALUE),
+                    new AttributeModifierBrewEffectBehaviour.AttributeTemplate("safe_fall_distance", 1.0, AttributeModifier.Operation.ADD_VALUE)
+            ))
+    );
+
+    // EXTRA PULL ========== Increase gravity attr
+    public static final String _extra_pull_id = "effect.extra_pull";
+    public static final RegistryObject<BrewEffectBehaviour> EXTRA_PULL = BREW_EFFECT_BEHAVIOURS.register(
+            _extra_pull_id,
+            () -> BrewEffectBehaviour.attributeModifier(List.of(
+                    new AttributeModifierBrewEffectBehaviour.AttributeTemplate("gravity", 0.01, AttributeModifier.Operation.ADD_VALUE),
+                    new AttributeModifierBrewEffectBehaviour.AttributeTemplate("safe_fall_distance", -0.2, AttributeModifier.Operation.ADD_VALUE)
+            ))
+    );
+
+    // INVISIBILITY ========== You disappear lol
+    public static final String _invisibility_id = "effect.invisibility";
+    public static final RegistryObject<BrewEffectBehaviour> INVISIBILITY = BREW_EFFECT_BEHAVIOURS.register(
+            _invisibility_id,
+            () -> new BrewEffectBehaviour(
+                    context -> {
+                        context.entity().setInvisible(true);
+                    },
+                    context -> {
+                        context.entity().setInvisible(false);
+                    },
+                    BrewEffectBehaviour.TickMode.START_AND_END
+            )
+    );
+
+    // LUCKY ========== Increase luck attribute
+    public static final String _lucky_id = "effect.lucky";
+    public static final RegistryObject<BrewEffectBehaviour> LUCKY = BREW_EFFECT_BEHAVIOURS.register(
+            _lucky_id,
+            () -> BrewEffectBehaviour.attributeModifier("luck")
+    );
+
+    // UNLUCKY ========== Decrease luck attribute
+    public static final String _unlucky_id = "effect.unlucky";
+    public static final RegistryObject<BrewEffectBehaviour> UNLUCKY = BREW_EFFECT_BEHAVIOURS.register(
+            Potions.FIRE_RESISTANCE
+            _unlucky_id,
+            () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("luck", -1))
     );
 
     public static void init() {
