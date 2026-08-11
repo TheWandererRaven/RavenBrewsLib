@@ -4,6 +4,7 @@ import com.thewandererraven.ravenbrewslib.Constants;
 import com.thewandererraven.ravenbrewslib.registry.RavenBrewsLibRegistryKeys;
 import com.thewandererraven.ravenbrewslib.registry.RegistryObject;
 import com.thewandererraven.ravenbrewslib.registry.RegistryProvider;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.alchemy.Potions;
 
@@ -147,6 +148,20 @@ public class BrewEffectsRegistry {
             )
     );
 
+    // FIRE RESISTANCE ========== Decrease fire damage
+    public static final String _fire_resistance_id = "effect.fire_resistance";
+    public static final RegistryObject<BrewEffectBehaviour> FIRE_RESISTANCE = BREW_EFFECT_BEHAVIOURS.register(
+            _fire_resistance_id,
+            () -> BrewEffectBehaviour.hurtModifier(DamageTypeTags.IS_FIRE, false)
+    );
+
+    // FIRE IMMUNITY ========== Decrease luck attribute
+    public static final String _fire_immunity_id = "effect.fire_immunity";
+    public static final RegistryObject<BrewEffectBehaviour> FIRE_IMMUNITY = BREW_EFFECT_BEHAVIOURS.register(
+            _fire_immunity_id,
+            () -> BrewEffectBehaviour.hurtModifier(DamageTypeTags.IS_FIRE, true)
+    );
+
     // LUCKY ========== Increase luck attribute
     public static final String _lucky_id = "effect.lucky";
     public static final RegistryObject<BrewEffectBehaviour> LUCKY = BREW_EFFECT_BEHAVIOURS.register(
@@ -157,7 +172,6 @@ public class BrewEffectsRegistry {
     // UNLUCKY ========== Decrease luck attribute
     public static final String _unlucky_id = "effect.unlucky";
     public static final RegistryObject<BrewEffectBehaviour> UNLUCKY = BREW_EFFECT_BEHAVIOURS.register(
-            Potions.FIRE_RESISTANCE
             _unlucky_id,
             () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("luck", -1))
     );
