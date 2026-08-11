@@ -1,7 +1,7 @@
 package com.thewandererraven.ravenbrewslib.brew.effect;
 
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.damagesource.DamageType;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -24,6 +24,22 @@ public class BrewEffectBehaviour {
 
     public static BrewEffectBehaviour instant(Consumer<BrewEffectContext> primaryEffect) {
         return instant(primaryEffect, context -> {});
+    }
+
+    public static BrewEffectBehaviour hurtModifier(TagKey<DamageType> damageTypeTagKey) {
+        return hurtModifier(damageTypeTagKey, false);
+    }
+
+    public static BrewEffectBehaviour hurtModifier(TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability) {
+        return hurtModifier(context -> {}, TickMode.NONE, damageTypeTagKey, isInvulnerability);
+    }
+
+    public static BrewEffectBehaviour hurtModifier(Consumer<BrewEffectContext> primaryEffect, TickMode tickMode, TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability) {
+        return hurtModifier(primaryEffect, context -> {}, tickMode, damageTypeTagKey, isInvulnerability);
+    }
+
+    public static BrewEffectBehaviour hurtModifier(Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect, TickMode tickMode, TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability) {
+        return new HurtModifierBrewEffectBehaviour(primaryEffect, additionalEffect, tickMode, damageTypeTagKey, isInvulnerability);
     }
 
     public static BrewEffectBehaviour attributeModifier(List<AttributeModifierBrewEffectBehaviour.AttributeTemplate> attributes) {
@@ -70,6 +86,7 @@ public class BrewEffectBehaviour {
         SINGLE,
         EVERY_TICK,
         START_AND_END,
-        INTERVAL
+        INTERVAL,
+        NONE
     }
 }
