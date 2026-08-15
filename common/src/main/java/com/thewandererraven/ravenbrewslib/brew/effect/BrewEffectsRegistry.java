@@ -74,31 +74,45 @@ public class BrewEffectsRegistry {
             () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("attack_speed", -1))
     );
 
+    // STRONG ATTACK ========== Increase attack_damage attribute
+    public static final String _strong_attack_id = "effect.strong_attack";
+    public static final RegistryObject<BrewEffectBehaviour> STRONG_ATTACK = BREW_EFFECT_BEHAVIOURS.register(
+            _strong_attack_id,
+            () -> BrewEffectBehaviour.attributeModifier("attack_damage")
+    );
+
+    // WEAK ATTACK ========== Decrease attack_damage attribute
+    public static final String _weak_attack_id = "effect.weak_attack";
+    public static final RegistryObject<BrewEffectBehaviour> WEAK_ATTACK = BREW_EFFECT_BEHAVIOURS.register(
+            _weak_attack_id,
+            () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("attack_damage", -1))
+    );
+
     // MINER'S ELBOW ========== Increase block break speed attribute
-    public static final String _miners_elbow_id = "effect.miners_elbow";
-    public static final RegistryObject<BrewEffectBehaviour> MINERS_ELBOW = BREW_EFFECT_BEHAVIOURS.register(
-            _miners_elbow_id,
+    public static final String _block_breaking_speed_id = "effect.block_breaking_speed";
+    public static final RegistryObject<BrewEffectBehaviour> BLOCK_BREAKING_SPEED = BREW_EFFECT_BEHAVIOURS.register(
+            _block_breaking_speed_id,
             () -> BrewEffectBehaviour.attributeModifier("block_break_speed")
     );
 
     // OVERWORKED ========== Decrease block break speed attribute
-    public static final String _overworked_id = "effect.overworked";
-    public static final RegistryObject<BrewEffectBehaviour> MINING_FATIGUE = BREW_EFFECT_BEHAVIOURS.register(
-            _overworked_id,
+    public static final String _block_breaking_slowness_id = "effect.block_breaking_slowness";
+    public static final RegistryObject<BrewEffectBehaviour> BLOCK_BREAKING_SLOWNESS = BREW_EFFECT_BEHAVIOURS.register(
+            _block_breaking_slowness_id,
             () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("block_break_speed", -1))
     );
 
     // STRONG LEGS ========== Decrease fall damage multiplier attribute
-    public static final String _strong_legs_id = "effect.strong_legs";
-    public static final RegistryObject<BrewEffectBehaviour> STRONG_LEGS = BREW_EFFECT_BEHAVIOURS.register(
-            _strong_legs_id,
+    public static final String _decreased_fall_damage_id = "effect.decreased_fall_damage";
+    public static final RegistryObject<BrewEffectBehaviour> DECREASED_FALL_DAMAGE = BREW_EFFECT_BEHAVIOURS.register(
+            _decreased_fall_damage_id,
             () -> BrewEffectBehaviour.attributeModifier("fall_damage_multiplier")
     );
 
     // WEAK LEGS ========== Increase fall damage multiplier attribute
-    public static final String _weak_legs_id = "effect.weak_legs";
-    public static final RegistryObject<BrewEffectBehaviour> WEAK_LEGS = BREW_EFFECT_BEHAVIOURS.register(
-            _weak_legs_id,
+    public static final String _increased_fall_damage_id = "effect.increased_fall_damage";
+    public static final RegistryObject<BrewEffectBehaviour> INCREASED_FALL_DAMAGE = BREW_EFFECT_BEHAVIOURS.register(
+            _increased_fall_damage_id,
             () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("fall_damage_multiplier", -1))
     );
 
