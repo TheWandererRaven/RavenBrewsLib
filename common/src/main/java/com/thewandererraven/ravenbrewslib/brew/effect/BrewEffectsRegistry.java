@@ -190,6 +190,46 @@ public class BrewEffectsRegistry {
             () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("luck", -1))
     );
 
+    // REGENERATION ========== Heals the player some amount after some interval of ticks
+    public static final String _regeneration_id = "effect.regeneration";
+    public static final RegistryObject<BrewEffectBehaviour> REGENERATION = BREW_EFFECT_BEHAVIOURS.register(
+            _regeneration_id,
+            () -> new BrewEffectBehaviour(
+                    context -> {
+                        context.entity().heal((float) context.effectMainValue());
+                    },
+                    context -> {},
+                    BrewEffectBehaviour.TickMode.INTERVAL
+            )
+    );
+
+    // POISON ========== Damages the player some amount after some interval of ticks
+    public static final String _poison_id = "effect.poison";
+    public static final RegistryObject<BrewEffectBehaviour> POISON = BREW_EFFECT_BEHAVIOURS.register(
+            _poison_id,
+            () -> new BrewEffectBehaviour(
+                    context -> {
+                        if(context.entity().getHealth() > 1.0)
+                            context.entity().hurt(context.entity().damageSources().magic(), (float) context.effectMainValue());
+                    },
+                    context -> {},
+                    BrewEffectBehaviour.TickMode.INTERVAL
+            )
+    );
+
+    // FATAL POISON ========== Damages the player some amount after some interval of ticks
+    public static final String _fatal_poison_id = "effect.fatal_poison";
+    public static final RegistryObject<BrewEffectBehaviour> FATAL_POISON = BREW_EFFECT_BEHAVIOURS.register(
+            _fatal_poison_id,
+            () -> new BrewEffectBehaviour(
+                    context -> {
+                        context.entity().hurt(context.entity().damageSources().magic(), (float) context.effectMainValue());
+                    },
+                    context -> {},
+                    BrewEffectBehaviour.TickMode.INTERVAL
+            )
+    );
+
     public static void init() {
 
     }

@@ -11,12 +11,14 @@ public class BrewEffectInstance {
     public BrewEffectBehaviour effectBehaviour;
     public int remainingTicks;
     public int duration;
+    int intervalDuration;
     public double mainValue;
     public double secondaryValue;
 
-    public BrewEffectInstance(BrewEffectBehaviour effectBehaviour, int duration, double mainValue, double secondaryValue) {
+    public BrewEffectInstance(BrewEffectBehaviour effectBehaviour, int duration, int intervalDuration, double mainValue, double secondaryValue) {
         this.effectBehaviour = effectBehaviour;
         this.duration = duration;
+        this.intervalDuration = intervalDuration;
         this.resetEffectTicks();
         this.mainValue = mainValue;
         this.secondaryValue = secondaryValue;
@@ -24,7 +26,7 @@ public class BrewEffectInstance {
 
     public BrewEffectInstance(Level level, BrewEffectDefinition effectDef)
     {
-        this(BrewEffectBehaviour.EMPTY, effectDef.duration(), effectDef.mainValue(), effectDef.secondaryValue());
+        this(BrewEffectBehaviour.EMPTY, effectDef.duration(), effectDef.intervalDuration(), effectDef.mainValue(), effectDef.secondaryValue());
         BrewEffectBehaviour behaviour = BrewEffectsUtils.findEffectBehaviour(level, effectDef.id());
         if(behaviour != null) {
             this.effectBehaviour = behaviour;
@@ -63,5 +65,9 @@ public class BrewEffectInstance {
 
     public boolean isEffectEnding() {
         return this.remainingTicks <= 0;
+    }
+
+    public boolean isEffectAtInterval() {
+        return (this.remainingTicks % this.intervalDuration) == 0.0;
     }
 }

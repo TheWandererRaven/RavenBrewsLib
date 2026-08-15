@@ -72,11 +72,11 @@ public class AttributeModifierBrewEffectBehaviour extends BrewEffectBehaviour {
         }
 
         public AttributeTemplate(ResourceLocation id, double baseAmount) {
-            this(id, baseAmount, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            this(id, baseAmount, AttributeModifier.Operation.ADD_VALUE);
         }
 
         public AttributeTemplate(ResourceLocation id) {
-            this(id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            this(id, 1);
         }
 
         public AttributeTemplate(String id, double baseAmount, AttributeModifier.Operation operation) {
