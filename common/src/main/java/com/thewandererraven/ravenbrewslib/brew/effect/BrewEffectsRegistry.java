@@ -190,6 +190,34 @@ public class BrewEffectsRegistry {
             () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("luck", -1))
     );
 
+    // SWIM SPEED ========== Increase water movement efficiency
+    public static final String _swim_speed_id = "effect.swim_speed";
+    public static final RegistryObject<BrewEffectBehaviour> SWIM_SPEED = BREW_EFFECT_BEHAVIOURS.register(
+            _swim_speed_id,
+            () -> BrewEffectBehaviour.attributeModifier("water_movement_efficiency")
+    );
+
+    // SWIM SLOWNESS ========== Decrease water movement efficiency
+    public static final String _swim_slowness_id = "effect.swim_slowness";
+    public static final RegistryObject<BrewEffectBehaviour> SWIM_SLOWNESS = BREW_EFFECT_BEHAVIOURS.register(
+            _swim_slowness_id,
+            () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("water_movement_efficiency", -1))
+    );
+
+    // UNDERWATER MINING SPEED ========== Increase submerged mining speed
+    public static final String _underwater_mining_speed_id = "effect.underwater_mining_speed";
+    public static final RegistryObject<BrewEffectBehaviour> UNDERWATER_MINING_SPEED = BREW_EFFECT_BEHAVIOURS.register(
+            _underwater_mining_speed_id,
+            () -> BrewEffectBehaviour.attributeModifier("submerged_mining_speed")
+    );
+
+    // UNDERWATER MINING SLOWNESS ========== Decrease submerged mining speed
+    public static final String _underwater_mining_slowness_id = "effect.underwater_mining_slowness";
+    public static final RegistryObject<BrewEffectBehaviour> UNDERWATER_MINING_SLOWNESS = BREW_EFFECT_BEHAVIOURS.register(
+            _underwater_mining_slowness_id,
+            () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("submerged_mining_speed", -1))
+    );
+
     // REGENERATION ========== Heals the player some amount after some interval of ticks
     public static final String _regeneration_id = "effect.regeneration";
     public static final RegistryObject<BrewEffectBehaviour> REGENERATION = BREW_EFFECT_BEHAVIOURS.register(
@@ -203,7 +231,7 @@ public class BrewEffectsRegistry {
             )
     );
 
-    // POISON ========== Damages the player some amount after some interval of ticks
+    // POISON ========== Damages the player some amount after some interval of ticks, stopping at half a heart
     public static final String _poison_id = "effect.poison";
     public static final RegistryObject<BrewEffectBehaviour> POISON = BREW_EFFECT_BEHAVIOURS.register(
             _poison_id,
