@@ -31,7 +31,7 @@ public class BrewEffectBehaviour {
     }
 
     public static BrewEffectBehaviour hurtModifier(TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability) {
-        return hurtModifier(context -> {}, TickMode.NONE, damageTypeTagKey, isInvulnerability);
+        return hurtModifier(context -> {}, TickMode.IGNORE, damageTypeTagKey, isInvulnerability);
     }
 
     public static BrewEffectBehaviour hurtModifier(Consumer<BrewEffectContext> primaryEffect, TickMode tickMode, TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability) {
@@ -78,8 +78,10 @@ public class BrewEffectBehaviour {
         return attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate(attributeId), primaryEffect, additionalEffect);
     }
 
-    public static final BrewEffectBehaviour EMPTY = instant(
-            (context) -> {}
+    public static final BrewEffectBehaviour EMPTY = new BrewEffectBehaviour(
+            context -> {},
+            context -> {},
+            TickMode.IGNORE
     );
 
     public enum TickMode {
@@ -87,6 +89,6 @@ public class BrewEffectBehaviour {
         EVERY_TICK,
         START_AND_END,
         INTERVAL,
-        NONE
+        IGNORE
     }
 }

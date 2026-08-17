@@ -190,6 +190,13 @@ public class BrewEffectsRegistry {
             () -> BrewEffectBehaviour.attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("luck", -1))
     );
 
+    // WATER_BREATHING ========== Allows the player to breath underwater
+    public static final String _water_breathing_id = "effect.water_breathing";
+    public static final RegistryObject<BrewEffectBehaviour> WATER_BREATHING = BREW_EFFECT_BEHAVIOURS.register(
+            _water_breathing_id,
+            () -> BrewEffectBehaviour.EMPTY
+    );
+
     // SWIM SPEED ========== Increase water movement efficiency
     public static final String _swim_speed_id = "effect.swim_speed";
     public static final RegistryObject<BrewEffectBehaviour> SWIM_SPEED = BREW_EFFECT_BEHAVIOURS.register(
