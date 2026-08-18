@@ -19,7 +19,7 @@ public record BrewEffectDefinition(
             instance.group(
                     ResourceLocation.CODEC.fieldOf("id").forGetter(BrewEffectDefinition::id),
                     Codec.INT.optionalFieldOf("duration", 0).forGetter(BrewEffectDefinition::duration),
-                    Codec.INT.optionalFieldOf("interval_duration", 20).forGetter(BrewEffectDefinition::duration),
+                    Codec.INT.optionalFieldOf("interval_duration", 0).forGetter(BrewEffectDefinition::intervalDuration),
                     Codec.DOUBLE.fieldOf("main_value").forGetter(BrewEffectDefinition::mainValue),
                     Codec.DOUBLE.optionalFieldOf("secondary_value", 0.0).forGetter(BrewEffectDefinition::secondaryValue)
             ).apply(instance, BrewEffectDefinition::new)
