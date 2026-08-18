@@ -56,7 +56,15 @@ public class BrewEffectsUtils {
         return getDisplayableDurationFromSeconds((int) secondsDuration);
     }
 
+    public static String getDisplayableSecondsFromTicks(int durationInTicks) {
+        double secondsDuration = Math.floor((double) durationInTicks / 20);
+        return String.format("%02d", (int) secondsDuration);
+    }
+
     public static String getDisplayableDurationFromSeconds(int durationInSeconds) {
-        return String.format("%02d:%02d", (int) Math.floor((durationInSeconds / 60.0)), (int) (durationInSeconds % 60.0));
+        if(durationInSeconds < 60)
+            return String.format("%02d", durationInSeconds);
+        else
+            return String.format("%02d:%02d", (int) Math.floor((durationInSeconds / 60.0)), (int) (durationInSeconds % 60.0));
     }
 }
