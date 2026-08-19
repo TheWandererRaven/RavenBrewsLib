@@ -194,7 +194,7 @@ public class BrewEffectsRegistry {
     public static final String _water_breathing_id = "effect.water_breathing";
     public static final RegistryObject<BrewEffectBehaviour> WATER_BREATHING = BREW_EFFECT_BEHAVIOURS.register(
             _water_breathing_id,
-            () -> BrewEffectBehaviour.EMPTY
+            BrewEffectBehaviour::empty
     );
 
     // SWIM SPEED ========== Increase water movement efficiency

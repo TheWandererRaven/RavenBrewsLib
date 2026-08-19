@@ -78,6 +78,14 @@ public class BrewEffectBehaviour {
         return attributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate(attributeId), primaryEffect, additionalEffect);
     }
 
+    public static BrewEffectBehaviour empty() {
+        return new BrewEffectBehaviour(
+                context -> {},
+                context -> {},
+                TickMode.IGNORE
+        );
+    }
+
     public static final BrewEffectBehaviour EMPTY = new BrewEffectBehaviour(
             context -> {},
             context -> {},
