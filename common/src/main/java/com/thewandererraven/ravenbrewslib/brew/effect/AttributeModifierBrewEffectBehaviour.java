@@ -16,8 +16,9 @@ public class AttributeModifierBrewEffectBehaviour extends BrewEffectBehaviour {
     //final List<ResourceLocation> attributeIds;
     //final AttributeModifier.Operation attributeOperation;
 
-    public AttributeModifierBrewEffectBehaviour(List<AttributeTemplate> attributes, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
+    public AttributeModifierBrewEffectBehaviour(ResourceLocation id, List<AttributeTemplate> attributes, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
         super(
+                id,
                 brewEffectContext -> {
                     for (AttributeTemplate attr : attributes) {
                         AttributeModifierBrewEffectBehaviour.addAttributeModifierToPlayer(
@@ -37,7 +38,8 @@ public class AttributeModifierBrewEffectBehaviour extends BrewEffectBehaviour {
                         );
                         additionalEffect.accept(brewEffectContext);
                     }
-                }
+                },
+                TickMode.START_AND_END
                 );
     }
 
@@ -71,11 +73,11 @@ public class AttributeModifierBrewEffectBehaviour extends BrewEffectBehaviour {
         }
 
         public AttributeTemplate(ResourceLocation id, double baseAmount) {
-            this(id, baseAmount, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            this(id, baseAmount, AttributeModifier.Operation.ADD_VALUE);
         }
 
         public AttributeTemplate(ResourceLocation id) {
-            this(id, 1, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+            this(id, 1);
         }
 
         public AttributeTemplate(String id, double baseAmount, AttributeModifier.Operation operation) {

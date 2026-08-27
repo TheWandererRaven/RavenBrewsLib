@@ -10,6 +10,7 @@ import java.util.List;
 public record BrewEffectDefinition(
         ResourceLocation id,
         int duration,
+        int intervalDuration,
         double mainValue,
         double secondaryValue
 ) {
@@ -18,6 +19,7 @@ public record BrewEffectDefinition(
             instance.group(
                     ResourceLocation.CODEC.fieldOf("id").forGetter(BrewEffectDefinition::id),
                     Codec.INT.optionalFieldOf("duration", 0).forGetter(BrewEffectDefinition::duration),
+                    Codec.INT.optionalFieldOf("interval_duration", 0).forGetter(BrewEffectDefinition::intervalDuration),
                     Codec.DOUBLE.fieldOf("main_value").forGetter(BrewEffectDefinition::mainValue),
                     Codec.DOUBLE.optionalFieldOf("secondary_value", 0.0).forGetter(BrewEffectDefinition::secondaryValue)
             ).apply(instance, BrewEffectDefinition::new)
@@ -33,13 +35,15 @@ public record BrewEffectDefinition(
                 new BrewEffectDefinition.Builder(
                         ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "effect.haste"),
                         15 * 20,
+                        0,
                         5.0,
                         0.0
                 ),
                 new BrewEffectDefinition.Builder(
                         ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "effect.slowness"),
                         7 * 20,
-                        -0.2,
+                        0,
+                        0.2,
                         0.0
                 )
         );
@@ -48,27 +52,33 @@ public record BrewEffectDefinition(
     public static class Builder {
         public ResourceLocation id;
         int duration;
+        int intervalDuration;
         double mainValue;
         double secondaryValue;
 
-        public Builder(ResourceLocation id, int duration, double mainValue, double secondaryValue) {
+        public Builder(ResourceLocation id, int duration, int intervalDuration, double mainValue, double secondaryValue) {
             this.id = id;
             this.duration = duration;
+            this.intervalDuration = intervalDuration;
             this.mainValue = mainValue;
             this.secondaryValue = secondaryValue;
         }
 
         public Builder(ResourceLocation id) {
-            this(id, 0, 0.0, 0.0);
+            this(id, 0, 0, 0.0, 0.0);
         }
 
         public Builder addDuration(int addedDuration) {
             this.duration += addedDuration;
+            if(this.duration < 0)
+                this.duration = 0;
             return this;
         }
 
         public Builder scaleDuration(double multiplier) {
             this.duration = (int) Math.ceil(this.duration * multiplier);
+            if(this.duration < 0)
+                this.duration = 0;
             return this;
         }
 
@@ -103,7 +113,7 @@ public record BrewEffectDefinition(
         }
 
         public BrewEffectDefinition build() {
-            return new BrewEffectDefinition(this.id, this.duration, this.mainValue, this.secondaryValue);
+            return new BrewEffectDefinition(this.id, this.duration, this.intervalDuration, this.mainValue, this.secondaryValue);
         }
     }
 }

@@ -4,7 +4,10 @@
   "package": "com.thewandererraven.ravenbrewslib.mixin",
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_18",
-  "mixins": [],
+  "mixins": [
+    "MixinLivingEntity",
+    "MixinMobEffectUtils"
+  ],
   "client": [
     "MixinMinecraft"
   ],

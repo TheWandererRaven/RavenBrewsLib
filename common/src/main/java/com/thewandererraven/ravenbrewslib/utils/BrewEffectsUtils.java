@@ -50,4 +50,21 @@ public class BrewEffectsUtils {
     public static Optional<ResourceLocation> findBrewVariant(List<Item> items) {
         return BrewVariantRegistry.get(items);
     }
+
+    public static String getDisplayableDurationFromTicks(int durationInTicks) {
+        double secondsDuration = Math.floor((double) durationInTicks / 20);
+        return getDisplayableDurationFromSeconds((int) secondsDuration);
+    }
+
+    public static String getDisplayableSecondsFromTicks(int durationInTicks) {
+        double secondsDuration = Math.floor((double) durationInTicks / 20);
+        return String.format("%02d", (int) secondsDuration);
+    }
+
+    public static String getDisplayableDurationFromSeconds(int durationInSeconds) {
+        if(durationInSeconds < 60)
+            return String.format("%02d", durationInSeconds);
+        else
+            return String.format("%02d:%02d", (int) Math.floor((durationInSeconds / 60.0)), (int) (durationInSeconds % 60.0));
+    }
 }
