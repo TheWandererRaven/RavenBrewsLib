@@ -16,6 +16,7 @@ public interface IBrewEffectsManager {
     int getTotalRemainingTicks();
 
     public boolean isEmpty();
+    public boolean isCurrentEffect(ResourceLocation id);
     void add(List<BrewEffectDefinition> brewData);
     void tick();
     public void clearEffects();
@@ -30,8 +31,6 @@ public interface IBrewEffectsManager {
     default boolean isCurrentEffectToBeInvulnerableFor(DamageSource damageSource) {
         if(getCurrentEffect() != null)
             if(getCurrentEffect().effectBehaviour instanceof HurtModifierBrewEffectBehaviour hurtModEffBehaviour) {
-                boolean idsamsource = damageSource.is(hurtModEffBehaviour.damageTag);
-                boolean isInvulnreable = hurtModEffBehaviour.isInvulnerability;
                 return damageSource.is(hurtModEffBehaviour.damageTag) && hurtModEffBehaviour.isInvulnerability;
             }
         return false;
