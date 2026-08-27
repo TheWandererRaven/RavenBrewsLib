@@ -20,8 +20,8 @@ public class HurtModifierBrewEffectBehaviour extends BrewEffectBehaviour {
     public TagKey<DamageType> damageTag = null;
     public boolean isInvulnerability = false;
 
-    public HurtModifierBrewEffectBehaviour(Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect, TickMode tickMode, TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability) {
-        super(primaryEffect, additionalEffect, tickMode);
+    public HurtModifierBrewEffectBehaviour(ResourceLocation id, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect, TickMode tickMode, TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability) {
+        super(id, primaryEffect, additionalEffect, tickMode);
         this.damageTag = damageTypeTagKey;
         this.isInvulnerability = isInvulnerability;
     }

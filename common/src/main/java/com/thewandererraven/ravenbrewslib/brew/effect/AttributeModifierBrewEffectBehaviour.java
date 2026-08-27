@@ -16,8 +16,9 @@ public class AttributeModifierBrewEffectBehaviour extends BrewEffectBehaviour {
     //final List<ResourceLocation> attributeIds;
     //final AttributeModifier.Operation attributeOperation;
 
-    public AttributeModifierBrewEffectBehaviour(List<AttributeTemplate> attributes, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
+    public AttributeModifierBrewEffectBehaviour(ResourceLocation id, List<AttributeTemplate> attributes, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect) {
         super(
+                id,
                 brewEffectContext -> {
                     for (AttributeTemplate attr : attributes) {
                         AttributeModifierBrewEffectBehaviour.addAttributeModifierToPlayer(
