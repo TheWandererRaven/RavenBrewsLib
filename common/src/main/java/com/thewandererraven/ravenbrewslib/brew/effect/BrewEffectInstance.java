@@ -26,7 +26,7 @@ public class BrewEffectInstance {
 
     public BrewEffectInstance(Level level, BrewEffectDefinition effectDef)
     {
-        this(BrewEffectBehaviour.EMPTY, effectDef.duration(), effectDef.intervalDuration(), effectDef.mainValue(), effectDef.secondaryValue());
+        this(BrewEffectsRegistry.EMPTY.get(), effectDef.duration(), effectDef.intervalDuration(), effectDef.mainValue(), effectDef.secondaryValue());
         BrewEffectBehaviour behaviour = BrewEffectsUtils.findEffectBehaviour(level, effectDef.id());
         if(behaviour != null) {
             this.effectBehaviour = behaviour;
