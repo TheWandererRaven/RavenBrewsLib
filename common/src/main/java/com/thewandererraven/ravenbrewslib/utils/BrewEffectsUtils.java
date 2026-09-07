@@ -51,14 +51,16 @@ public class BrewEffectsUtils {
         return BrewVariantRegistry.get(items);
     }
 
+    public static double getSecondsFromTicks(int durationInTicks) {
+        return Math.ceil((double) durationInTicks / 20);
+    }
+
     public static String getDisplayableDurationFromTicks(int durationInTicks) {
-        double secondsDuration = Math.floor((double) durationInTicks / 20);
-        return getDisplayableDurationFromSeconds((int) secondsDuration);
+        return getDisplayableDurationFromSeconds((int) getSecondsFromTicks(durationInTicks));
     }
 
     public static String getDisplayableSecondsFromTicks(int durationInTicks) {
-        double secondsDuration = Math.floor((double) durationInTicks / 20);
-        return String.format("%02d", (int) secondsDuration);
+        return String.format("%02d", (int) getSecondsFromTicks(durationInTicks));
     }
 
     public static String getDisplayableDurationFromSeconds(int durationInSeconds) {

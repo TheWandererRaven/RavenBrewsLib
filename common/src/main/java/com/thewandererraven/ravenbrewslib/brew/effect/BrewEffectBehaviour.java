@@ -22,6 +22,11 @@ public class BrewEffectBehaviour {
         this.tickMode = tickMode;
     }
 
+    public ResourceLocation generateIconLocation() {
+        // TODO: Rework this later to have more constant paths
+        return ResourceLocation.fromNamespaceAndPath(this.id.getNamespace(), "textures/gui/effect/icons/" + this.id.getPath() + ".png");
+    }
+
     public static class Builder {
         public ResourceLocation id;
         public Consumer<BrewEffectContext> primaryEffect;
