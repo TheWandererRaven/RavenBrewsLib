@@ -1,5 +1,6 @@
 package com.thewandererraven.ravenbrewslib.mixin;
 
+import com.thewandererraven.ravenbrewslib.brew.effect.BrewEffectInstance;
 import com.thewandererraven.ravenbrewslib.brew.effect.BrewEffectsRegistry;
 import com.thewandererraven.ravenbrewslib.brew.effect.IBrewEffectManagerHolder;
 import net.minecraft.world.effect.MobEffectUtil;
@@ -16,8 +17,7 @@ public class MixinMobEffectUtils {
     private static void ravenBrewsLib$hasWaterBreathingEffect(LivingEntity entity, CallbackInfoReturnable<Boolean> cir) {
         if(entity instanceof IBrewEffectManagerHolder holder) {
             if(holder.ravenbrewslib$getBrewEffectManager() != null)
-                if(holder.ravenbrewslib$getBrewEffectManager().getCurrentEffect() != null)
-                    cir.setReturnValue(cir.getReturnValue() || holder.ravenbrewslib$getBrewEffectManager().getCurrentEffect().effectBehaviour == BrewEffectsRegistry.WATER_BREATHING.get());
+                cir.setReturnValue(cir.getReturnValue() || holder.ravenbrewslib$getBrewEffectManager().hasActiveEffect(BrewEffectsRegistry.WATER_BREATHING.get().id));
         }
     }
 

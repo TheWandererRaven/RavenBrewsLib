@@ -29,18 +29,18 @@ public class MixinLivingEntity implements IBrewEffectManagerHolder {
         ravenBrewsLib$brewEffectsManager = manager;
     }
 
-    @ModifyExpressionValue(method = "actuallyHurt", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/LivingEntity;getDamageAfterMagicAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F"
-    ))
-    private float ravenCoffee$applyBrewDamageReduction(float amount, ServerLevel level, DamageSource damageSource) {
-        IBrewEffectsManager effManager = ravenbrewslib$getBrewEffectManager();
-        if (effManager == null)
-            return amount;
-
-        float reduction = effManager.getDamageReductionForCurrentEffect(damageSource);
-
-        return Math.max(amount - reduction, 0.0F);
-    }
+//    @ModifyExpressionValue(method = "actuallyHurt", at = @At(value = "INVOKE",
+//            target = "Lnet/minecraft/world/entity/LivingEntity;getDamageAfterMagicAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F"
+//    ))
+//    private float ravenCoffee$applyBrewDamageReduction(float amount, ServerLevel level, DamageSource damageSource) {
+//        IBrewEffectsManager effManager = ravenbrewslib$getBrewEffectManager();
+//        if (effManager == null)
+//            return amount;
+//
+//        float reduction = effManager.getDamageReductionFromActiveEffects(damageSource);
+//
+//        return Math.max(amount - reduction, 0.0F);
+//    }
 
     @ModifyReturnValue(method = "getDamageAfterMagicAbsorb", at = @At("RETURN"))
     private float ravenCoffee$applyBrewMagicReduction(float damage, DamageSource damageSource, float originalDamage) {
@@ -51,7 +51,7 @@ public class MixinLivingEntity implements IBrewEffectManagerHolder {
         if (effManager == null) {
             return damage;
         }
-        float flatReduction = effManager.getDamageReductionForCurrentEffect(damageSource);
+        float flatReduction = effManager.getDamageReductionFromActiveEffects(damageSource);
 
         //TODO: award damage resistance stat to player
         return Math.max(0.0F, damage - flatReduction);
@@ -61,7 +61,7 @@ public class MixinLivingEntity implements IBrewEffectManagerHolder {
     private void ravenCoffee$hurtServerAtStart(ServerLevel p_376221_, DamageSource p_376460_, float p_376610_, CallbackInfoReturnable<Boolean> cir) {
         IBrewEffectsManager effManager = ravenbrewslib$getBrewEffectManager();
         if(effManager != null) {
-            if(effManager.isCurrentEffectToBeInvulnerableFor(p_376460_)) {
+            if(effManager.isActiveEffectToBeInvulnerableFor(p_376460_)) {
                 cir.setReturnValue(false);
             }
         }
