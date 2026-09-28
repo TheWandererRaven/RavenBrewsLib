@@ -1,6 +1,7 @@
 package com.thewandererraven.ravenbrewslib.brew.effect;
 
 
+import com.thewandererraven.ravenbrewslib.Constants;
 import com.thewandererraven.ravenbrewslib.brew.data.BrewEffectDefinition;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -61,6 +62,10 @@ public interface IBrewEffectsManager {
         return getInactiveEffects().stream().anyMatch(eff -> eff.id().equals(id));
     }
 
+    static List<BrewEffectDefinition.Builder> getListOfDefaultEffects() {
+        return List.of();
+    }
+
     default void clearInactiveEffects() {
         getInactiveEffects().clear();
     }
@@ -82,12 +87,13 @@ public interface IBrewEffectsManager {
         return false;
     }
 
-    default float getDamageReductionFromActiveEffects(DamageSource damageSource) {
+    default float getDamageModifierFromActiveEffects(DamageSource damageSource, boolean isVulnerability) {
+        float effReduction = 0.0f;
         if(!getActiveEffects().isEmpty())
             for(BrewEffectInstance effInstance: getActiveEffects())
                 if(effInstance.effectBehaviour instanceof HurtModifierBrewEffectBehaviour hurtModEffBehaviour)
-                    if(damageSource.is(hurtModEffBehaviour.damageTag))
-                        return (float) effInstance.mainValue;
-        return 0.0f;
+                    if(damageSource.is(hurtModEffBehaviour.damageTag) && hurtModEffBehaviour.isVulnerability == isVulnerability)
+                        effReduction += (float) effInstance.mainValue;
+        return effReduction;
     }
 }

@@ -63,12 +63,20 @@ public class BrewEffectBehaviour {
             return new BrewEffectBehaviour(this.id, this.primaryEffect, this.additionalEffect, this.tickMode);
         }
 
-        public BrewEffectBehaviour buildHurtModifier(TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability) {
-            return new HurtModifierBrewEffectBehaviour(id, primaryEffect, additionalEffect, tickMode, damageTypeTagKey, isInvulnerability);
+        public BrewEffectBehaviour buildHurtModifier(TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability, boolean isVulnerability) {
+            return new HurtModifierBrewEffectBehaviour(id, primaryEffect, additionalEffect, tickMode, damageTypeTagKey, isInvulnerability, isVulnerability);
         }
 
-        public BrewEffectBehaviour buildHurtModifier(TagKey<DamageType> damageTypeTagKey) {
-            return buildHurtModifier(damageTypeTagKey, false);
+        public BrewEffectBehaviour buildInvulnerabilityHurtModifier(TagKey<DamageType> damageTypeTagKey) {
+            return buildHurtModifier(damageTypeTagKey, true, false);
+        }
+
+        public BrewEffectBehaviour buildResistanceHurtModifier(TagKey<DamageType> damageTypeTagKey) {
+            return buildHurtModifier(damageTypeTagKey, false, false);
+        }
+
+        public BrewEffectBehaviour buildVulnerabilityHurtModifier(TagKey<DamageType> damageTypeTagKey) {
+            return buildHurtModifier(damageTypeTagKey, false, true);
         }
 
         public BrewEffectBehaviour buildAttributeModifier(List<AttributeModifierBrewEffectBehaviour.AttributeTemplate> attributes) {
