@@ -32,27 +32,6 @@ public record BrewEffectDefinition(
         return ResourceLocation.fromNamespaceAndPath(this.id().getNamespace(), "textures/gui/effect/icons/" + this.id.getPath() + ".png");
     }
 
-    public static List<BrewEffectDefinition.Builder> getListOfDefaultEffects() {
-        return List.of(
-                new BrewEffectDefinition.Builder(
-                        ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "effect.haste"),
-                        10,
-                        15 * 20,
-                        0,
-                        5.0,
-                        0.0
-                ),
-                new BrewEffectDefinition.Builder(
-                        ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "effect.slowness"),
-                        15,
-                        7 * 20,
-                        0,
-                        0.2,
-                        0.0
-                )
-        );
-    }
-
     public static class Builder {
         public ResourceLocation id;
         int priority;
