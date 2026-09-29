@@ -68,6 +68,8 @@ public class BrewEffectInstance {
     }
 
     public boolean isEffectAtInterval() {
+        if(this.intervalDuration <= 0)
+            return false;
         return (this.remainingTicks % this.intervalDuration) == 0.0;
     }
 }
