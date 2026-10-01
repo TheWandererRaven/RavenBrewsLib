@@ -10,6 +10,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IBrewEffectsManager {
     LivingEntity getOwnerEntity();
@@ -54,6 +55,10 @@ public interface IBrewEffectsManager {
         if(hasActiveEffects())
             return getActiveEffects().get(index);
         return null;
+    }
+
+    default BrewEffectInstance getActiveEffect(ResourceLocation id) {
+        return getActiveEffects().stream().filter(eff -> eff.effectBehaviour.id.equals(id)).findFirst().orElse(null);
     }
 
     default boolean hasActiveEffect(ResourceLocation id) {

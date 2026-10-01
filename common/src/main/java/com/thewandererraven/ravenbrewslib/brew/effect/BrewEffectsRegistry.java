@@ -316,7 +316,7 @@ public class BrewEffectsRegistry {
             _fatal_poison_id,
             () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _fatal_poison_id)
                     .withPrimaryEffect(context ->
-                        context.entity().hurt(context.entity().damageSources().magic(), (float) context.effectMainValue())
+                            context.entity().hurt(context.entity().damageSources().magic(), (float) context.effectMainValue())
                     )
                     .withTickMode(BrewEffectBehaviour.TickMode.INTERVAL)
                     .build()
