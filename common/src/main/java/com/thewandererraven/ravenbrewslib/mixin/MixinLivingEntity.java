@@ -73,11 +73,4 @@ public class MixinLivingEntity implements IBrewEffectManagerHolder {
     private void ravenbrewslib$triggerOnDeathMobEffectsClearBrewEffects(ServerLevel level, Entity.RemovalReason removalReason, CallbackInfo ci) {
         ravenbrewslib$getBrewEffectManager().clearAllData();
     }
-
-    @Inject(method = "removeAllEffects", at = @At("HEAD"))
-    private void ravenCoffee$removeAllEffects(CallbackInfoReturnable<Boolean> ret) {
-        if (!((LivingEntity)(Object)this).level().isClientSide && !this.ravenbrewslib$getBrewEffectManager().isEmpty()) {
-            this.ravenbrewslib$getBrewEffectManager().clearAllData();
-            }
-    }
 }
