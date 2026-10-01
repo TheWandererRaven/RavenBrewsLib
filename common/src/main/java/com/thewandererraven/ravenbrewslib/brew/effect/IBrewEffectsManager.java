@@ -12,6 +12,8 @@ import net.minecraft.world.entity.LivingEntity;
 import java.util.List;
 
 public interface IBrewEffectsManager {
+    LivingEntity getOwnerEntity();
+
     List<BrewEffectDefinition> getInactiveEffects();
     void addInactiveEffects(List<BrewEffectDefinition> effDefs);
     void removeInactiveEffects(List<ResourceLocation> effIds);
@@ -71,6 +73,9 @@ public interface IBrewEffectsManager {
     }
 
     default void clearActiveEffects() {
+        for(BrewEffectInstance actInstance : getActiveEffects())
+            if(actInstance.effectBehaviour instanceof AttributeModifierBrewEffectBehaviour)
+                actInstance.applyAdditionalEffect(this.getOwnerEntity());
         getActiveEffects().clear();
     }
 
