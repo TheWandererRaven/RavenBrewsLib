@@ -7,11 +7,13 @@ import com.thewandererraven.ravenbrewslib.brew.effect.IBrewEffectsManager;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
@@ -29,41 +31,46 @@ public class MixinLivingEntity implements IBrewEffectManagerHolder {
         ravenBrewsLib$brewEffectsManager = manager;
     }
 
-    @ModifyExpressionValue(method = "actuallyHurt", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/LivingEntity;getDamageAfterMagicAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F"
-    ))
-    private float ravenCoffee$applyBrewDamageReduction(float amount, ServerLevel level, DamageSource damageSource) {
-        IBrewEffectsManager effManager = ravenbrewslib$getBrewEffectManager();
-        if (effManager == null)
-            return amount;
-
-        float reduction = effManager.getDamageReductionForCurrentEffect(damageSource);
-
-        return Math.max(amount - reduction, 0.0F);
-    }
+//    @ModifyExpressionValue(method = "actuallyHurt", at = @At(value = "INVOKE",
+//            target = "Lnet/minecraft/world/entity/LivingEntity;getDamageAfterMagicAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F"
+//    ))
+//    private float ravenCoffee$applyBrewDamageReduction(float amount, ServerLevel level, DamageSource damageSource) {
+//        IBrewEffectsManager effManager = ravenbrewslib$getBrewEffectManager();
+//        if (effManager == null)
+//            return amount;
+//
+//        float reduction = effManager.getDamageReductionFromActiveEffects(damageSource);
+//
+//        return Math.max(amount - reduction, 0.0F);
+//    }
 
     @ModifyReturnValue(method = "getDamageAfterMagicAbsorb", at = @At("RETURN"))
-    private float ravenCoffee$applyBrewMagicReduction(float damage, DamageSource damageSource, float originalDamage) {
-        if (damageSource.is(DamageTypeTags.BYPASSES_EFFECTS) || damageSource.is(DamageTypeTags.BYPASSES_RESISTANCE))
+    private float ravenbrewslib$applyBrewMagicReduction(float damage, DamageSource damageSource, float originalDamage) {
+        if (damageSource.is(DamageTypeTags.BYPASSES_EFFECTS))
             return damage;
-
         IBrewEffectsManager effManager = ravenbrewslib$getBrewEffectManager();
-        if (effManager == null) {
+        if (effManager == null)
             return damage;
-        }
-        float flatReduction = effManager.getDamageReductionForCurrentEffect(damageSource);
-
+        float flatReduction = 0.0f;
+        if (!damageSource.is(DamageTypeTags.BYPASSES_RESISTANCE))
+            flatReduction = effManager.getDamageModifierFromActiveEffects(damageSource, false);
+        float flatIncrease = effManager.getDamageModifierFromActiveEffects(damageSource, true);
         //TODO: award damage resistance stat to player
-        return Math.max(0.0F, damage - flatReduction);
+        return damage + flatIncrease - flatReduction;
     }
 
     @Inject(method = "hurtServer", at = @At(value = "HEAD"), cancellable = true)
-    private void ravenCoffee$hurtServerAtStart(ServerLevel p_376221_, DamageSource p_376460_, float p_376610_, CallbackInfoReturnable<Boolean> cir) {
+    private void ravenbrewslib$hurtServerAtStart(ServerLevel p_376221_, DamageSource p_376460_, float p_376610_, CallbackInfoReturnable<Boolean> cir) {
         IBrewEffectsManager effManager = ravenbrewslib$getBrewEffectManager();
         if(effManager != null) {
-            if(effManager.isCurrentEffectToBeInvulnerableFor(p_376460_)) {
+            if(effManager.isActiveEffectToBeInvulnerableFor(p_376460_)) {
                 cir.setReturnValue(false);
             }
         }
+    }
+
+    @Inject(method = "triggerOnDeathMobEffects", at = @At("TAIL"))
+    private void ravenbrewslib$triggerOnDeathMobEffectsClearBrewEffects(ServerLevel level, Entity.RemovalReason removalReason, CallbackInfo ci) {
+        ravenbrewslib$getBrewEffectManager().clearAllData();
     }
 }

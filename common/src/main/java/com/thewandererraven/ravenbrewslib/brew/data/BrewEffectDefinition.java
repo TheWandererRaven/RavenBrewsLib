@@ -9,6 +9,7 @@ import java.util.List;
 
 public record BrewEffectDefinition(
         ResourceLocation id,
+        int priority,
         int duration,
         int intervalDuration,
         double mainValue,
@@ -18,6 +19,7 @@ public record BrewEffectDefinition(
     public static final Codec<BrewEffectDefinition> CODEC = RecordCodecBuilder.create(instance ->
             instance.group(
                     ResourceLocation.CODEC.fieldOf("id").forGetter(BrewEffectDefinition::id),
+                    Codec.INT.optionalFieldOf("priority", 10).forGetter(BrewEffectDefinition::priority),
                     Codec.INT.optionalFieldOf("duration", 0).forGetter(BrewEffectDefinition::duration),
                     Codec.INT.optionalFieldOf("interval_duration", 0).forGetter(BrewEffectDefinition::intervalDuration),
                     Codec.DOUBLE.fieldOf("main_value").forGetter(BrewEffectDefinition::mainValue),
@@ -30,34 +32,17 @@ public record BrewEffectDefinition(
         return ResourceLocation.fromNamespaceAndPath(this.id().getNamespace(), "textures/gui/effect/icons/" + this.id.getPath() + ".png");
     }
 
-    public static List<BrewEffectDefinition.Builder> getListOfDefaultEffects() {
-        return List.of(
-                new BrewEffectDefinition.Builder(
-                        ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "effect.haste"),
-                        15 * 20,
-                        0,
-                        5.0,
-                        0.0
-                ),
-                new BrewEffectDefinition.Builder(
-                        ResourceLocation.fromNamespaceAndPath(Constants.MOD_ID, "effect.slowness"),
-                        7 * 20,
-                        0,
-                        0.2,
-                        0.0
-                )
-        );
-    }
-
     public static class Builder {
         public ResourceLocation id;
+        int priority;
         int duration;
         int intervalDuration;
         double mainValue;
         double secondaryValue;
 
-        public Builder(ResourceLocation id, int duration, int intervalDuration, double mainValue, double secondaryValue) {
+        public Builder(ResourceLocation id, int priority, int duration, int intervalDuration, double mainValue, double secondaryValue) {
             this.id = id;
+            this.priority = priority;
             this.duration = duration;
             this.intervalDuration = intervalDuration;
             this.mainValue = mainValue;
@@ -65,7 +50,7 @@ public record BrewEffectDefinition(
         }
 
         public Builder(ResourceLocation id) {
-            this(id, 0, 0, 0.0, 0.0);
+            this(id, 10, 0, 0, 0.0, 0.0);
         }
 
         public Builder addDuration(int addedDuration) {
@@ -113,7 +98,7 @@ public record BrewEffectDefinition(
         }
 
         public BrewEffectDefinition build() {
-            return new BrewEffectDefinition(this.id, this.duration, this.intervalDuration, this.mainValue, this.secondaryValue);
+            return new BrewEffectDefinition(this.id, this.priority, this.duration, this.intervalDuration, this.mainValue, this.secondaryValue);
         }
     }
 }

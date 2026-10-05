@@ -1,6 +1,7 @@
 package com.thewandererraven.ravenbrewslib.brew.effect;
 
 
+import com.thewandererraven.ravenbrewslib.Constants;
 import com.thewandererraven.ravenbrewslib.brew.data.BrewEffectDefinition;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -9,40 +10,100 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface IBrewEffectsManager {
-    List<BrewEffectDefinition> getEffectsStack();
-    BrewEffectInstance getCurrentEffect();
-    int getTotalRemainingTicks();
+    LivingEntity getOwnerEntity();
 
-    public boolean isEmpty();
-    public boolean isCurrentEffect(ResourceLocation id);
-    void add(List<BrewEffectDefinition> brewData);
+    List<BrewEffectDefinition> getInactiveEffects();
+    void addInactiveEffects(List<BrewEffectDefinition> effDefs);
+    void removeInactiveEffects(List<ResourceLocation> effIds);
+
+    List<BrewEffectInstance> getActiveEffects();
+    void addActiveEffects(List<BrewEffectInstance> effInstances);
+    void addActiveEffectsFromDefinitions(List<BrewEffectDefinition> effDefs);
+    void removeActiveEffects(List<ResourceLocation> effIds);
+
     void tick();
-    public void clearEffects();
-    public void clearAll();
-    public void sendEffectIconsToClient();
-    public void sendDurationsToClient();
-    public void sendCaffeineToClient();
-    public void sendAllInfoToClient();
-    public CompoundTag serializeNBT();
-    public void deserializeNBT(CompoundTag tag);
 
-    default boolean isCurrentEffectToBeInvulnerableFor(DamageSource damageSource) {
-        if(getCurrentEffect() != null)
-            if(getCurrentEffect().effectBehaviour instanceof HurtModifierBrewEffectBehaviour hurtModEffBehaviour) {
-                return damageSource.is(hurtModEffBehaviour.damageTag) && hurtModEffBehaviour.isInvulnerability;
-            }
+    CompoundTag serializeNBT();
+    void deserializeNBT(CompoundTag tag);
+
+    default void addActiveEffects(BrewEffectInstance effInstance) {
+        this.addActiveEffects(List.of(effInstance));
+    }
+
+    default boolean hasInactiveEffects() {
+        return !getInactiveEffects().isEmpty();
+    }
+
+    default boolean hasActiveEffects() {
+        return !getActiveEffects().isEmpty();
+    }
+
+    default boolean isEmpty() {
+        return !hasInactiveEffects() && !hasActiveEffects();
+    }
+
+    default BrewEffectDefinition getInactiveEffect(int index) {
+        if(hasInactiveEffects())
+            return getInactiveEffects().get(index);
+        return null;
+    }
+
+    default BrewEffectInstance getActiveEffect(int index) {
+        if(hasActiveEffects())
+            return getActiveEffects().get(index);
+        return null;
+    }
+
+    default BrewEffectInstance getActiveEffect(ResourceLocation id) {
+        return getActiveEffects().stream().filter(eff -> eff.effectBehaviour.id.equals(id)).findFirst().orElse(null);
+    }
+
+    default boolean hasActiveEffect(ResourceLocation id) {
+        return getActiveEffects().stream().anyMatch(eff -> eff.effectBehaviour.id.equals(id));
+    }
+
+    default boolean hasInactiveEffect(ResourceLocation id) {
+        return getInactiveEffects().stream().anyMatch(eff -> eff.id().equals(id));
+    }
+
+    static List<BrewEffectDefinition.Builder> getListOfDefaultEffects() {
+        return List.of();
+    }
+
+    default void clearInactiveEffects() {
+        getInactiveEffects().clear();
+    }
+
+    default void clearActiveEffects() {
+        for(BrewEffectInstance actInstance : getActiveEffects())
+            if(actInstance.effectBehaviour instanceof AttributeModifierBrewEffectBehaviour)
+                actInstance.applyAdditionalEffect(this.getOwnerEntity());
+        getActiveEffects().clear();
+    }
+
+    default void clearAllData() {
+        this.clearInactiveEffects();
+        this.clearActiveEffects();
+    }
+
+    default boolean isActiveEffectToBeInvulnerableFor(DamageSource damageSource) {
+        if(!getActiveEffects().isEmpty())
+            for(BrewEffectInstance effInstance: getActiveEffects())
+                if(effInstance.effectBehaviour instanceof HurtModifierBrewEffectBehaviour hurtModEffBehaviour)
+                    return damageSource.is(hurtModEffBehaviour.damageTag) && hurtModEffBehaviour.isInvulnerability;
         return false;
     }
 
-    default float getDamageReductionForCurrentEffect(DamageSource damageSource) {
-        if(getCurrentEffect() != null)
-            if(getCurrentEffect().effectBehaviour instanceof HurtModifierBrewEffectBehaviour hurtModEffBehaviour) {
-                if(damageSource.is(hurtModEffBehaviour.damageTag)) {
-                    return (float) getCurrentEffect().mainValue;
-                }
-            }
-        return 0.0f;
+    default float getDamageModifierFromActiveEffects(DamageSource damageSource, boolean isVulnerability) {
+        float effReduction = 0.0f;
+        if(!getActiveEffects().isEmpty())
+            for(BrewEffectInstance effInstance: getActiveEffects())
+                if(effInstance.effectBehaviour instanceof HurtModifierBrewEffectBehaviour hurtModEffBehaviour)
+                    if(damageSource.is(hurtModEffBehaviour.damageTag) && hurtModEffBehaviour.isVulnerability == isVulnerability)
+                        effReduction += (float) effInstance.mainValue;
+        return effReduction;
     }
 }

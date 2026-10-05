@@ -59,35 +59,42 @@ public class BrewEffectsRegistry {
                     .buildAttributeModifier("max_health")
     );
 
-    // SPEED ========== Increase movement speed attribute
-    public static final String _speed_id = "effect.speed";
-    public static final RegistryObject<BrewEffectBehaviour> SPEED = BREW_EFFECT_BEHAVIOURS.register(
-            _speed_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _speed_id))
-                    .buildAttributeModifier("movement_speed")
+    // MOVEMENT BOOST ========== Increase movement speed attribute
+    public static final String _movement_boost_id = "effect.movement_boost";
+    public static final RegistryObject<BrewEffectBehaviour> MOVEMENT_BOOST = BREW_EFFECT_BEHAVIOURS.register(
+            _movement_boost_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _movement_boost_id))
+                    .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate(
+                            "movement_speed",
+                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE
+                    ))
     );
 
-    // SLOWNESS ========== Decrease movement speed attribute
-    public static final String _slowness_id = "effect.slowness";
-    public static final RegistryObject<BrewEffectBehaviour> SLOWNESS = BREW_EFFECT_BEHAVIOURS.register(
-            _slowness_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _slowness_id))
-                    .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("movement_speed", -1))
+    // MOVEMENT SLOW ========== Decrease movement speed attribute
+    public static final String _movement_slow_id = "effect.movement_slow";
+    public static final RegistryObject<BrewEffectBehaviour> MOVEMENT_SLOW = BREW_EFFECT_BEHAVIOURS.register(
+            _movement_slow_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _movement_slow_id))
+                    .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate(
+                            "movement_speed",
+                            -1,
+                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE
+                    ))
     );
 
-    // QUICK ATTACK ========== Increase attack speed attribute
-    public static final String _quick_attack_id = "effect.quick_attack";
-    public static final RegistryObject<BrewEffectBehaviour> QUICK_ATTACK = BREW_EFFECT_BEHAVIOURS.register(
-            _quick_attack_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _quick_attack_id))
+    // ATTACK RUSH ========== Increase attack speed attribute
+    public static final String _attack_rush_id = "effect.attack_rush";
+    public static final RegistryObject<BrewEffectBehaviour> ATTACK_RUSH = BREW_EFFECT_BEHAVIOURS.register(
+            _attack_rush_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _attack_rush_id))
                     .buildAttributeModifier("attack_speed")
     );
 
-    // SLOW ATTACK ========== Decrease attack_speed attribute
-    public static final String _slow_attack_id = "effect.slow_attack";
-    public static final RegistryObject<BrewEffectBehaviour> SLOW_ATTACK = BREW_EFFECT_BEHAVIOURS.register(
-            _slow_attack_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _slow_attack_id))
+    // ATTACK DELAY |  ========== Decrease attack_speed attribute
+    public static final String _attack_delay_id = "effect.attack_delay";
+    public static final RegistryObject<BrewEffectBehaviour> ATTACK_DELAY = BREW_EFFECT_BEHAVIOURS.register(
+            _attack_delay_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _attack_delay_id))
                     .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("attack_speed", -1))
     );
 
@@ -107,35 +114,45 @@ public class BrewEffectsRegistry {
                     .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("attack_damage", -1))
     );
 
-    // MINER'S ELBOW ========== Increase block break speed attribute
-    public static final String _block_breaking_speed_id = "effect.block_breaking_speed";
-    public static final RegistryObject<BrewEffectBehaviour> BLOCK_BREAKING_SPEED = BREW_EFFECT_BEHAVIOURS.register(
-            _block_breaking_speed_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _block_breaking_speed_id))
-                    .buildAttributeModifier("block_break_speed")
+    // LETHARGY ========== weak attack, less mining efficiency, etc | Reduced health?
+    // FRAIL ========== some overall weakness / reduced health?
+
+    // MINING HASTE ========== Increase block break speed attribute
+    public static final String _mining_haste_id = "effect.mining_haste";
+    public static final RegistryObject<BrewEffectBehaviour> MINING_HASTE = BREW_EFFECT_BEHAVIOURS.register(
+            _mining_haste_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _mining_haste_id))
+                    .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate(
+                            "mining_efficiency",
+                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE
+                    ))
     );
 
-    // OVERWORKED ========== Decrease block break speed attribute
-    public static final String _block_breaking_slowness_id = "effect.block_breaking_slowness";
-    public static final RegistryObject<BrewEffectBehaviour> BLOCK_BREAKING_SLOWNESS = BREW_EFFECT_BEHAVIOURS.register(
-            _block_breaking_slowness_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _block_breaking_slowness_id))
-                    .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("block_break_speed", -1))
+    // MINING FATIGUE ========== Decrease block break speed attribute
+    public static final String _mining_fatigue_id = "effect.mining_fatigue";
+    public static final RegistryObject<BrewEffectBehaviour> MINING_FATIGUE = BREW_EFFECT_BEHAVIOURS.register(
+            _mining_fatigue_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _mining_fatigue_id))
+                    .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate(
+                            "mining_efficiency",
+                            -1,
+                            AttributeModifier.Operation.ADD_MULTIPLIED_BASE
+                    ))
     );
 
-    // STRONG LEGS ========== Decrease fall damage multiplier attribute
-    public static final String _decreased_fall_damage_id = "effect.decreased_fall_damage";
-    public static final RegistryObject<BrewEffectBehaviour> DECREASED_FALL_DAMAGE = BREW_EFFECT_BEHAVIOURS.register(
-            _decreased_fall_damage_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _decreased_fall_damage_id))
+    // SOFT LANDING ========== Decrease fall damage multiplier attribute
+    public static final String _soft_landing_id = "effect.soft_landing";
+    public static final RegistryObject<BrewEffectBehaviour> SOFT_LANDING = BREW_EFFECT_BEHAVIOURS.register(
+            _soft_landing_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _soft_landing_id))
                     .buildAttributeModifier("fall_damage_multiplier")
     );
 
-    // WEAK LEGS ========== Increase fall damage multiplier attribute
-    public static final String _increased_fall_damage_id = "effect.increased_fall_damage";
-    public static final RegistryObject<BrewEffectBehaviour> INCREASED_FALL_DAMAGE = BREW_EFFECT_BEHAVIOURS.register(
-            _increased_fall_damage_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _increased_fall_damage_id))
+    // ROUGH LANDING ========== Increase fall damage multiplier attribute
+    public static final String _rough_landing_id = "effect.rough_landing";
+    public static final RegistryObject<BrewEffectBehaviour> ROUGH_LANDING = BREW_EFFECT_BEHAVIOURS.register(
+            _rough_landing_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _rough_landing_id))
                     .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("fall_damage_multiplier", -1))
     );
 
@@ -146,7 +163,6 @@ public class BrewEffectsRegistry {
             () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _jump_boost_id))
                     .buildAttributeModifier(List.of(
                     new AttributeModifierBrewEffectBehaviour.AttributeTemplate("jump_strength"),
-                    //new AttributeModifierBrewEffectBehaviour.AttributeTemplate("fall_damage_multiplier", -1),
                     new AttributeModifierBrewEffectBehaviour.AttributeTemplate("safe_fall_distance")
             ))
     );
@@ -162,11 +178,11 @@ public class BrewEffectsRegistry {
             ))
     );
 
-    // EXTRA PULL ========== Increase gravity attr
-    public static final String _extra_pull_id = "effect.extra_pull";
-    public static final RegistryObject<BrewEffectBehaviour> EXTRA_PULL = BREW_EFFECT_BEHAVIOURS.register(
-            _extra_pull_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _extra_pull_id))
+    // GROUNDING ========== Increase gravity attr
+    public static final String _grounding_id = "effect.grounding";
+    public static final RegistryObject<BrewEffectBehaviour> GROUNDING = BREW_EFFECT_BEHAVIOURS.register(
+            _grounding_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _grounding_id))
                     .buildAttributeModifier(List.of(
                     new AttributeModifierBrewEffectBehaviour.AttributeTemplate("gravity", 0.01, AttributeModifier.Operation.ADD_VALUE),
                     new AttributeModifierBrewEffectBehaviour.AttributeTemplate("safe_fall_distance", -0.2, AttributeModifier.Operation.ADD_VALUE)
@@ -192,7 +208,7 @@ public class BrewEffectsRegistry {
     public static final RegistryObject<BrewEffectBehaviour> FIRE_RESISTANCE = BREW_EFFECT_BEHAVIOURS.register(
             _fire_resistance_id,
             () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _fire_resistance_id))
-                    .buildHurtModifier(DamageTypeTags.IS_FIRE, false)
+                    .buildResistanceHurtModifier(DamageTypeTags.IS_FIRE)
     );
 
     // FIRE IMMUNITY ========== Decrease luck attribute
@@ -200,7 +216,15 @@ public class BrewEffectsRegistry {
     public static final RegistryObject<BrewEffectBehaviour> FIRE_IMMUNITY = BREW_EFFECT_BEHAVIOURS.register(
             _fire_immunity_id,
             () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _fire_immunity_id))
-                    .buildHurtModifier(DamageTypeTags.IS_FIRE, true)
+                    .buildInvulnerabilityHurtModifier(DamageTypeTags.IS_FIRE)
+    );
+
+    // FIRE WEAKNESS ========== Decrease fire damage
+    public static final String _fire_weakness_id = "effect.fire_weakness";
+    public static final RegistryObject<BrewEffectBehaviour> FIRE_WEAKNESS = BREW_EFFECT_BEHAVIOURS.register(
+            _fire_weakness_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _fire_weakness_id))
+                    .buildVulnerabilityHurtModifier(DamageTypeTags.IS_FIRE)
     );
 
     // LUCKY ========== Increase luck attribute
@@ -227,35 +251,36 @@ public class BrewEffectsRegistry {
                     .build()
     );
 
-    // SWIM SPEED ========== Increase water movement efficiency
-    public static final String _swim_speed_id = "effect.swim_speed";
-    public static final RegistryObject<BrewEffectBehaviour> SWIM_SPEED = BREW_EFFECT_BEHAVIOURS.register(
-            _swim_speed_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _swim_speed_id))
+    // SWIM BOOST ========== Increase water movement efficiency
+    public static final String _swim_boost_id = "effect.swim_boost";
+    public static final RegistryObject<BrewEffectBehaviour> SWIM_BOOST = BREW_EFFECT_BEHAVIOURS.register(
+            _swim_boost_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _swim_boost_id))
                     .buildAttributeModifier("water_movement_efficiency")
     );
 
-    // SWIM SLOWNESS ========== Decrease water movement efficiency
-    public static final String _swim_slowness_id = "effect.swim_slowness";
-    public static final RegistryObject<BrewEffectBehaviour> SWIM_SLOWNESS = BREW_EFFECT_BEHAVIOURS.register(
-            _swim_slowness_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _swim_slowness_id))
+    // SWIM SLOW ========== Decrease water movement efficiency
+    public static final String _swim_slow_id = "effect.swim_slow";
+    public static final RegistryObject<BrewEffectBehaviour> SWIM_SLOW = BREW_EFFECT_BEHAVIOURS.register(
+            _swim_slow_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _swim_slow_id))
                     .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("water_movement_efficiency", -1))
     );
 
-    // UNDERWATER MINING SPEED ========== Increase submerged mining speed
-    public static final String _underwater_mining_speed_id = "effect.underwater_mining_speed";
-    public static final RegistryObject<BrewEffectBehaviour> UNDERWATER_MINING_SPEED = BREW_EFFECT_BEHAVIOURS.register(
-            _underwater_mining_speed_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _underwater_mining_speed_id))
+    // DREDGING HASTE | SCUBA MINING ========== Increase submerged mining speed
+    public static final String _dredging_haste_id = "effect.dredging_haste";
+    public static final RegistryObject<BrewEffectBehaviour> DREDGING_HASTE = BREW_EFFECT_BEHAVIOURS.register(
+            _dredging_haste_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _dredging_haste_id))
                     .buildAttributeModifier("submerged_mining_speed")
     );
 
-    // UNDERWATER MINING SLOWNESS ========== Decrease submerged mining speed
-    public static final String _underwater_mining_slowness_id = "effect.underwater_mining_slowness";
-    public static final RegistryObject<BrewEffectBehaviour> UNDERWATER_MINING_SLOWNESS = BREW_EFFECT_BEHAVIOURS.register(
-            _underwater_mining_slowness_id,
-            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _underwater_mining_slowness_id))
+    // SOGGY MINING | DREDGING FATIGUE | UNDERTOW MINING | PRESSURE MINING | UNDERWATER FATIGUE | ANCHORED MINING | ADRIFT MINING | MINING DRAG | SEASICK MINING | PRESSURIZED MINING | ----> I'm not entirely happy with dredging as a name
+    // DREDGING FATIGUE ========== Decrease submerged mining speed
+    public static final String _dredging_fatigue_id = "effect.dredging_fatigue";
+    public static final RegistryObject<BrewEffectBehaviour> DREDGING_FATIGUE = BREW_EFFECT_BEHAVIOURS.register(
+            _dredging_fatigue_id,
+            () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _dredging_fatigue_id))
                     .buildAttributeModifier(new AttributeModifierBrewEffectBehaviour.AttributeTemplate("submerged_mining_speed", -1))
     );
 
@@ -291,7 +316,7 @@ public class BrewEffectsRegistry {
             _fatal_poison_id,
             () -> (new BrewEffectBehaviour.Builder(Constants.MOD_ID, _fatal_poison_id)
                     .withPrimaryEffect(context ->
-                        context.entity().hurt(context.entity().damageSources().magic(), (float) context.effectMainValue())
+                            context.entity().hurt(context.entity().damageSources().magic(), (float) context.effectMainValue())
                     )
                     .withTickMode(BrewEffectBehaviour.TickMode.INTERVAL)
                     .build()

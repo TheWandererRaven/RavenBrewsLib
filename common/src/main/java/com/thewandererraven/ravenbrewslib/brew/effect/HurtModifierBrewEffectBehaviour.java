@@ -18,11 +18,13 @@ import java.util.function.Consumer;
 
 public class HurtModifierBrewEffectBehaviour extends BrewEffectBehaviour {
     public TagKey<DamageType> damageTag = null;
+    public boolean isVulnerability = false;
     public boolean isInvulnerability = false;
 
-    public HurtModifierBrewEffectBehaviour(ResourceLocation id, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect, TickMode tickMode, TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability) {
+    public HurtModifierBrewEffectBehaviour(ResourceLocation id, Consumer<BrewEffectContext> primaryEffect, Consumer<BrewEffectContext> additionalEffect, TickMode tickMode, TagKey<DamageType> damageTypeTagKey, boolean isInvulnerability, boolean isVulnerability) {
         super(id, primaryEffect, additionalEffect, tickMode);
         this.damageTag = damageTypeTagKey;
         this.isInvulnerability = isInvulnerability;
+        this.isVulnerability = isVulnerability;
     }
 }
